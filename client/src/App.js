@@ -29,6 +29,7 @@ const SearchPage = React.lazy(() => import('./components/views/SearchPage'));
 const FavoritePage = React.lazy(() =>
   import('./components/views/FavoritePage'),
 );
+const InsightPage = React.lazy(() => import('./components/views/InsightPage'));
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -59,7 +60,7 @@ class App extends React.Component {
 
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
-                <Route exact path="/home" component={HomePage} />
+                <Route exact path="/insight" component={InsightPage} />
                 <Route exact path="/search" component={SearchPage} />
                 <Route exact path="/favorite" component={FavoritePage} />
                 <Route exact path="/" component={DashboardPage} />

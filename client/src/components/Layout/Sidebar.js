@@ -2,7 +2,6 @@ import logo200Image from 'assets/img/logo/logo_200.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import SourceLink from 'components/SourceLink';
 import React from 'react';
-import { FaGithub } from 'react-icons/fa';
 import {
   MdAccountCircle,
   MdArrowDropDownCircle,
@@ -25,9 +24,9 @@ import {
   MdViewList,
   MdWeb,
   MdWidgets,
-  MdHome,
   MdFavorite,
   MdSearch,
+  MdAirplanemodeActive,
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -75,16 +74,16 @@ const navContents = [
 
 const pageContents = [
   { to: '/login', name: 'login / signup', exact: false, Icon: MdAccountCircle },
-  {
-    to: '/login-modal',
-    name: 'login modal',
-    exact: false,
-    Icon: MdViewCarousel,
-  },
+  // {
+  //   to: '/login-modal',
+  //   name: 'login modal',
+  //   exact: false,
+  //   Icon: MdViewCarousel,
+  // },
 ];
 
 const navItems = [
-  { to: '/home', name: 'home', exact: true, Icon: MdHome },
+  { to: '/insight', name: 'insight', exact: true, Icon: MdAirplanemodeActive },
   { to: '/search', name: 'search', exact: true, Icon: MdSearch },
   { to: '/favorite', name: 'favorite', exact: true, Icon: MdFavorite },
   { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
