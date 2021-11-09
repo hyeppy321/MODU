@@ -22,11 +22,16 @@
     "cors": "^2.8.5",
     "debug": "^4.1.1",
     "express": "^4.17.1",
+    "formik": "^2.2.9",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.12.3",
-    "react-redux": "^5.0.7",
-    "request": "^2.88.2"
+    "react-redux": "^5.1.2",
+    "redux": "^4.1.2",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.4.0",
+    "request": "^2.88.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "concurrently": "^6.0.1",

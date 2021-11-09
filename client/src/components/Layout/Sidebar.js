@@ -83,10 +83,10 @@ const pageContents = [
 ];
 
 const navItems = [
-  { to: '/insight', name: 'insight', exact: true, Icon: MdAirplanemodeActive },
+  { to: '/', name: 'insight', exact: true, Icon: MdAirplanemodeActive },
   { to: '/search', name: 'search', exact: true, Icon: MdSearch },
   { to: '/favorite', name: 'favorite', exact: true, Icon: MdFavorite },
-  { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
+  { to: '/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
   { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
   { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
   { to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },

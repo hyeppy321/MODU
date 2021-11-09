@@ -1,25 +1,30 @@
 import Page from 'components/Page';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ArrivalsService_URL, API_ENCODED_KEY } from '../Config';
 import Axios from 'axios';
+import { Card, CardBody, CardHeader, Col } from 'reactstrap';
+import MapWithBubbles from '../MapWithBubbles';
 
-export const InsightPage = props => {
+function InsightPage(props) {
+  const [Info, setInfo] = useState([]);
+  const [ReturnType, setReturnType] = useState('JSON');
+  const [NumOfRows, setNumOfRows] = useState(10);
+  const [PageNo, setPageNo] = useState(1);
+  const [CountryName, setCountryName] = useState('미국');
+  const [CountryIso, setCountryIso] = useState('US');
+
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    let dataToSubmit = {
-      encodedKey:
-        'r1%2FX7uK7cJ0DtLUvgK%2F9c95mWzoTl6toUTh7YKCij2%2BGRd8OaBD%2FjNqTcjoxP8uJTshSyggHh4ZIBjXCk1qGYA%3D%3D',
-      decodedKey:
-        'r1/X7uK7cJ0DtLUvgK/9c95mWzoTl6toUTh7YKCij2+GRd8OaBD/jNqTcjoxP8uJTshSyggHh4ZIBjXCk1qGYA==',
-      returnType: 'JSON',
-      numOfRows: 10,
-      pageNo: 1,
-      country_nm: '캐나다',
-      country_iso: 'CA',
-    };
-
-    Axios.post('/api/users/info', dataToSubmit).then(response => {
-      console.log(response.data);
+    let endpointInfo =
+      `${ArrivalsService_URL}?serviceKey=${API_ENCODED_KEY}&returnType=${ReturnType}
+      &numOfRows=${NumOfRows}&pageNo=${PageNo}&cond[country_nm::EQ]=` +
+      encodeURI(`${CountryName}`) +
+      `&cond[country_iso_alp2::EQ]=${CountryIso}`;
+    Axios.get(endpointInfo).then(res => {
+      if (res.data.resultMsg === '정상') {
+        setInfo(res.data.data);
+        console.log(res.data.data);
+      }
     });
   }, []);
   return (
@@ -28,9 +33,18 @@ export const InsightPage = props => {
       title="Insight"
       breadcrumbs={[{ name: 'Insight', active: true }]}
     >
-      홈
+      <Col lg="8" md="12" sm="12" xs="12">
+        <Card inverse className="bg-gradient-primary">
+          <CardHeader className="bg-gradient-primary">
+            Map with bubbles
+          </CardHeader>
+          <CardBody>
+            <MapWithBubbles />
+          </CardBody>
+        </Card>
+      </Col>
     </Page>
   );
-};
+}
 
 export default InsightPage;

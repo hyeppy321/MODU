@@ -60,10 +60,10 @@ class App extends React.Component {
 
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
-                <Route exact path="/insight" component={InsightPage} />
+                <Route exact path="/" component={InsightPage} />
                 <Route exact path="/search" component={SearchPage} />
                 <Route exact path="/favorite" component={FavoritePage} />
-                <Route exact path="/" component={DashboardPage} />
+                <Route exact path="/dashboard" component={DashboardPage} />
                 <Route exact path="/login-modal" component={AuthModalPage} />
                 <Route exact path="/buttons" component={ButtonPage} />
                 <Route exact path="/cards" component={CardPage} />
