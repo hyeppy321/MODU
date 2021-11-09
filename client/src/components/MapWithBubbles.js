@@ -1,5 +1,4 @@
 import world50m from 'assets/geo-data/world-50m.json';
-import cities from 'assets/geo-data/world-most-populous-cities.json';
 import { scaleLinear } from 'd3-scale';
 import React, { Component } from 'react';
 import {
@@ -16,15 +15,13 @@ const cityScale = scaleLinear()
   .domain([0, 37843000])
   .range([1, 25]);
 
-class BubbleMap extends Component {
-  state = {
-    cities,
-  };
-
-  render() {
-    // const primaryColor = getColor('primary');
+function BubbleMap (props) {
     const secondaryColor = getColor('secondary');
     const lightColor = getColor('light');
+    let {Info} = props;
+    Info.map((item) => ((
+      console.log(item.country_iso_alp2)
+    )))
 
     return (
       <ComposableMap
@@ -71,24 +68,9 @@ class BubbleMap extends Component {
               )
             }
           </Geographies>
-          <Markers>
-            {this.state.cities.map((city, i) => (
-              <Marker key={i} marker={city}>
-                <circle
-                  cx={0}
-                  cy={0}
-                  r={cityScale(city.population)}
-                  fill={secondaryColor}
-                  stroke={secondaryColor}
-                  strokeWidth="2"
-                />
-              </Marker>
-            ))}
-          </Markers>
         </ZoomableGroup>
       </ComposableMap>
     );
-  }
-}
+        }  
 
 export default BubbleMap;
