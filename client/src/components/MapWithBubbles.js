@@ -18,6 +18,7 @@ const cityScale = scaleLinear()
 function BubbleMap (props) {
     const secondaryColor = getColor('secondary');
     const lightColor = getColor('light');
+
     let {Info} = props;
     Info.map((item) => ((
       console.log(item.country_iso_alp2)
@@ -65,7 +66,7 @@ function BubbleMap (props) {
                       }}
                     />
                   ),
-              )
+              ) 
             }
           </Geographies>
         </ZoomableGroup>
