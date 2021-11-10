@@ -38,3 +38,6 @@ export const Weather_URI = 'http://api.openweathermap.org/data/2.5/weather';
 // "http://api.openweathermap.org/data/2.5/weather?q=seoul&appid=655cbe1696da4bc5a0225adc19cc4179
 
 export const Weather_KEY = '655cbe1696da4bc5a0225adc19cc4179';
+
+export const TravelSpecialWarningService_URL = 
+'http://apis.data.go.kr/1262000/TravelSpecialWarningService/getTravelSpecialWarningList' //특별여행경보
