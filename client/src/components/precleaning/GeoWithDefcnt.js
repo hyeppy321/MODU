@@ -15,6 +15,7 @@ export const SearchPage = props => {
       setDefcnt(res.data.response.body.items.item);
     });
   }, []);
+
   useEffect(() => {
     const filtercnt = nation => {
       let cnt = 0;
