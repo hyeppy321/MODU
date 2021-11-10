@@ -2,9 +2,9 @@ import Page from 'components/Page';
 import React, { useEffect, useState } from 'react';
 import { ArrivalsService_URL, API_ENCODED_KEY } from '../Config';
 import Axios from 'axios';
-import { Card, CardBody, CardHeader, Col } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row} from 'reactstrap';
 import Covid19 from 'components/map/Covid19.jsx';
-
+import CovidChart from '../chart/CovidChart';
 
 function InsightPage(props) {
   const [Info, setInfo] = useState([]);
@@ -28,8 +28,15 @@ function InsightPage(props) {
       }
     });
   }, []);
+
   return (
-    <Covid19/>
+    <Page>
+      <Row>
+        <Col><Covid19/></Col>
+      </Row>
+      <CovidChart/>
+    </Page>
+
   );
 }
 
