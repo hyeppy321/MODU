@@ -9,13 +9,11 @@ router.get("/auth", auth, (req, res) => {
     _id: req.user._id,
     isAuth: true,
     email: req.user.email,
-    name: req.user.name,
   });
 });
 
 router.post("/register", (req, res) => {
   const user = new User(req.body);
-
   user.save((err, doc) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({

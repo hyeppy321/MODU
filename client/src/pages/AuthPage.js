@@ -11,7 +11,7 @@ function AuthPage(props) {
     }
   };
   const handleLogoClick = () => {
-    this.props.history.replace('/');
+    props.history.replace('/');
   };
   return (
     <Row

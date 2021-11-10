@@ -1,6 +1,12 @@
 import Page from 'components/Page';
 import React, { useEffect, useState } from 'react';
-import { ArrivalsService_URL, API_ENCODED_KEY } from '../Config';
+import SearchInput from 'components/SearchInput';
+import { Row, Col, Button } from 'reactstrap';
+import {
+  ArrivalsService_URL,
+  API_ENCODED_KEY,
+  getCovid19NatInfStateJson_URL,
+} from '../Config';
 import Axios from 'axios';
 
 export const SearchPage = props => {
@@ -10,19 +16,17 @@ export const SearchPage = props => {
   const [PageNo, setPageNo] = useState(1);
   const [CountryName, setCountryName] = useState('미국');
   const [CountryIso, setCountryIso] = useState('US');
-
+  const userId = localStorage.getItem('userId');
+  console.log(userId);
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo =
-      `${ArrivalsService_URL}?serviceKey=${API_ENCODED_KEY}&returnType=${ReturnType}
-      &numOfRows=${NumOfRows}&pageNo=${PageNo}&cond[country_nm::EQ]=` +
-      encodeURI(`${CountryName}`) +
-      `&cond[country_iso_alp2::EQ]=${CountryIso}`;
+    let endpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211109`;
     Axios.get(endpointInfo).then(res => {
-      if (res.data.resultMsg === '정상') {
-        setInfo(res.data.data);
-        console.log(res.data.data);
-      }
+      // if (res.data.resultMsg === '정상') {
+      // setInfo(res.data.data);
+      console.log(res.data.response.body.items.item[0]);
+      console.log('gggg');
+      // }
     });
   }, []);
   return (
@@ -31,7 +35,15 @@ export const SearchPage = props => {
       title="Search"
       breadcrumbs={[{ name: 'Search', active: true }]}
     >
-      검색
+      국가명을 입력해주세요.
+      <Row>
+        <Col md="6" sm="12" xs="12">
+          <SearchInput />
+        </Col>
+        <Col md="6" sm="12" xs="12">
+          <Button color="secondary">Normal Button</Button>
+        </Col>
+      </Row>
     </Page>
   );
 };

@@ -7,6 +7,7 @@ import React from 'react';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
+import Auth from './hocs/auth';
 
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
 const AuthModalPage = React.lazy(() => import('pages/AuthModalPage'));
@@ -30,6 +31,9 @@ const FavoritePage = React.lazy(() =>
   import('./components/views/FavoritePage'),
 );
 const InsightPage = React.lazy(() => import('./components/views/InsightPage'));
+const GeoWithDefcnt = React.lazy(() =>
+  import('./components/precleaning/GeoWithDefcnt'),
+);
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -60,9 +64,17 @@ class App extends React.Component {
 
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
-                <Route exact path="/" component={InsightPage} />
-                <Route exact path="/search" component={SearchPage} />
-                <Route exact path="/favorite" component={FavoritePage} />
+                <Route exact path="/" component={Auth(InsightPage, null)} />
+                <Route
+                  exact
+                  path="/search"
+                  component={Auth(SearchPage, null)}
+                />
+                <Route
+                  exact
+                  path="/favorite"
+                  component={Auth(FavoritePage, true)}
+                />
                 <Route exact path="/dashboard" component={DashboardPage} />
                 <Route exact path="/login-modal" component={AuthModalPage} />
                 <Route exact path="/buttons" component={ButtonPage} />
@@ -83,6 +95,7 @@ class App extends React.Component {
                 <Route exact path="/forms" component={FormPage} />
                 <Route exact path="/input-groups" component={InputGroupPage} />
                 <Route exact path="/charts" component={ChartPage} />
+                <Route exact path="/test" component={GeoWithDefcnt} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />

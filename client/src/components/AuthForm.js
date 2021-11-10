@@ -1,152 +1,172 @@
 import logo200Image from 'assets/img/logo/logo_200.png';
-import PropTypes from 'prop-types';
-import React from 'react';
+import Axios from 'axios';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 
-class AuthForm extends React.Component {
-  get isLogin() {
-    return this.props.authState === STATE_LOGIN;
-  }
+import { registerUser, loginUser } from '../_actions/user_actions';
 
-  get isSignup() {
-    return this.props.authState === STATE_SIGNUP;
-  }
+function AuthForm(props) {
+  const dispatch = useDispatch();
+  const [Email, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
+  const [ConfirmPassword, setConfirmPassword] = useState('');
 
-  changeAuthState = authState => event => {
-    event.preventDefault();
-
-    this.props.onChangeAuthState(authState);
+  const onEmailHandler = event => {
+    setEmail(event.currentTarget.value);
+    console.log(Email);
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
+  const onPasswordHandler = event => {
+    setPassword(event.currentTarget.value);
   };
 
-  renderButtonText() {
-    const { buttonText } = this.props;
+  const onCofirmPasswordHandler = event => {
+    setConfirmPassword(event.currentTarget.value);
+  };
 
-    if (!buttonText && this.isLogin) {
+  const isLogin = () => {
+    return props.authState === STATE_LOGIN;
+  };
+
+  const isSignup = () => {
+    return props.authState === STATE_SIGNUP;
+  };
+
+  const changeAuthState = authState => event => {
+    event.preventDefault();
+
+    props.onChangeAuthState(authState);
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    let body = {
+      email: Email,
+      password: Password,
+    };
+    if (isLogin()) {
+      dispatch(loginUser(body)).then(res => {
+        if (res.payload.loginSuccess) {
+          window.localStorage.setItem('userId', res.payload.userId);
+          window.localStorage.setItem('login', true);
+          props.onLogoClick();
+        } else {
+          alert('이메일 또는 비밀번호가 잘못되었습니다.');
+        }
+      });
+    }
+    if (isSignup()) {
+      if (Password == ConfirmPassword) {
+        dispatch(registerUser(body)).then(res => {
+          if (res.payload.success) {
+            console.log('회원가입 성공');
+            // changeAuthState(STATE_LOGIN);
+            props.onChangeAuthState(STATE_LOGIN);
+          } else {
+            console.log(res.payload);
+          }
+        });
+      } else {
+        alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+      }
+    }
+  };
+
+  const renderButtonText = () => {
+    const { buttonText } = props;
+
+    if (!buttonText && isLogin()) {
       return 'Login';
     }
 
-    if (!buttonText && this.isSignup) {
+    if (!buttonText && isSignup()) {
       return 'Signup';
     }
 
     return buttonText;
-  }
+  };
 
-  render() {
-    const {
-      showLogo,
-      usernameLabel,
-      usernameInputProps,
-      passwordLabel,
-      passwordInputProps,
-      confirmPasswordLabel,
-      confirmPasswordInputProps,
-      children,
-      onLogoClick,
-    } = this.props;
+  const onLogoClick = props.onLogoClick;
+  const showLogo = true;
 
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        {showLogo && (
-          <div className="text-center pb-4">
-            <img
-              src={logo200Image}
-              className="rounded"
-              style={{ width: 60, height: 60, cursor: 'pointer' }}
-              alt="logo"
-              onClick={onLogoClick}
-            />
-          </div>
-        )}
-        <FormGroup>
-          <Label for={usernameLabel}>{usernameLabel}</Label>
-          <Input {...usernameInputProps} />
-        </FormGroup>
-        <FormGroup>
-          <Label for={passwordLabel}>{passwordLabel}</Label>
-          <Input {...passwordInputProps} />
-        </FormGroup>
-        {this.isSignup && (
-          <FormGroup>
-            <Label for={confirmPasswordLabel}>{confirmPasswordLabel}</Label>
-            <Input {...confirmPasswordInputProps} />
-          </FormGroup>
-        )}
-        <FormGroup check>
-          <Label check>
-            <Input type="checkbox" />{' '}
-            {this.isSignup ? 'Agree the terms and policy' : 'Remember me'}
-          </Label>
-        </FormGroup>
-        <hr />
-        <Button
-          size="lg"
-          className="bg-gradient-theme-left border-0"
-          block
-          onClick={this.handleSubmit}
-        >
-          {this.renderButtonText()}
-        </Button>
-
-        <div className="text-center pt-1">
-          <h6>or</h6>
-          <h6>
-            {this.isSignup ? (
-              <a href="#login" onClick={this.changeAuthState(STATE_LOGIN)}>
-                Login
-              </a>
-            ) : (
-              <a href="#signup" onClick={this.changeAuthState(STATE_SIGNUP)}>
-                Signup
-              </a>
-            )}
-          </h6>
+  return (
+    <Form onSubmit={handleSubmit}>
+      {showLogo && (
+        <div className="text-center pb-4">
+          <img
+            src={logo200Image}
+            className="rounded"
+            style={{ width: 60, height: 60, cursor: 'pointer' }}
+            alt="logo"
+            onClick={onLogoClick}
+          />
         </div>
+      )}
+      <FormGroup>
+        <Label for="Email">Email</Label>
+        <Input
+          type="email"
+          value={Email}
+          onChange={onEmailHandler}
+          placeholder="your@email.com"
+        />
+      </FormGroup>
+      <FormGroup>
+        <Label for="Password">Password</Label>
+        <Input
+          type="password"
+          value={Password}
+          onChange={onPasswordHandler}
+          placeholder="your password"
+        />
+      </FormGroup>
+      {isSignup() && (
+        <FormGroup>
+          <Label for="Confirm Password">Confirm Password</Label>
+          <Input
+            type="password"
+            value={ConfirmPassword}
+            onChange={onCofirmPasswordHandler}
+            placeholder="confirm your password"
+          />
+        </FormGroup>
+      )}
+      <FormGroup check>
+        <Label check>
+          <Input type="checkbox" />{' '}
+          {isSignup() ? 'Agree the terms and policy' : 'Remember me'}
+        </Label>
+      </FormGroup>
+      <hr />
+      <Button
+        size="lg"
+        className="bg-gradient-theme-left border-0"
+        block
+        onClick={handleSubmit}
+      >
+        {renderButtonText()}
+      </Button>
 
-        {children}
-      </Form>
-    );
-  }
+      <div className="text-center pt-1">
+        <h6>or</h6>
+        <h6>
+          {isSignup() ? (
+            <a href="#login" onClick={changeAuthState(STATE_LOGIN)}>
+              Login
+            </a>
+          ) : (
+            <a href="#signup" onClick={changeAuthState(STATE_SIGNUP)}>
+              Signup
+            </a>
+          )}
+        </h6>
+      </div>
+    </Form>
+  );
 }
 
 export const STATE_LOGIN = 'LOGIN';
 export const STATE_SIGNUP = 'SIGNUP';
-
-AuthForm.propTypes = {
-  authState: PropTypes.oneOf([STATE_LOGIN, STATE_SIGNUP]).isRequired,
-  showLogo: PropTypes.bool,
-  usernameLabel: PropTypes.string,
-  usernameInputProps: PropTypes.object,
-  passwordLabel: PropTypes.string,
-  passwordInputProps: PropTypes.object,
-  confirmPasswordLabel: PropTypes.string,
-  confirmPasswordInputProps: PropTypes.object,
-  onLogoClick: PropTypes.func,
-};
-
-AuthForm.defaultProps = {
-  authState: 'LOGIN',
-  showLogo: true,
-  usernameLabel: 'Email',
-  usernameInputProps: {
-    type: 'email',
-    placeholder: 'your@email.com',
-  },
-  passwordLabel: 'Password',
-  passwordInputProps: {
-    type: 'password',
-    placeholder: 'your password',
-  },
-  confirmPasswordLabel: 'Confirm Password',
-  confirmPasswordInputProps: {
-    type: 'password',
-    placeholder: 'confirm your password',
-  },
-  onLogoClick: () => {},
-};
 
 export default AuthForm;

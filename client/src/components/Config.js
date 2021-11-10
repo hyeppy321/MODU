@@ -12,13 +12,13 @@ export const API_DECODED_KEY =
 
 // var url =
 //   "http://apis.data.go.kr/1262000/CountryOverseasArrivalsService/getCountryOverseasArrivalsList"; // 국가별 해외입국자 조치현황
-// var url =
-//   "http://apis.data.go.kr/1262000/CountryCovid19SafetyServiceNew/getCountrySafetyNewsListNew"; // 국가 지역별 최신안전소식(코로나관련)
+export const SafetyNews_URL =
+  'http://apis.data.go.kr/1262000/CountryCovid19SafetyServiceNew/getCountrySafetyNewsListNew'; // 국가 지역별 최신안전소식(코로나관련)
 // var url =
 //   "http://apis.data.go.kr/1262000/CountryKoreaDepartureService/getCountryKoreaDepartureList"; // 국가별 한국발 입국자 조치
 // var url =
 //   "http://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2"; // 국가∙지역별 여행경보
 // var url =
 //   "http://apis.data.go.kr/1262000/TravelWarningService/getTravelWarningList"; // 여행경보제도
-// var url =
-//   "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19NatInfStateJson";
+export const getCovid19NatInfStateJson_URL =
+  'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19NatInfStateJson';
