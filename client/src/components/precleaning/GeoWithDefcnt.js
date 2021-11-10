@@ -8,6 +8,7 @@ import { Geographies, Geography } from 'react-simple-maps';
 export const SearchPage = props => {
   const [Defcnt, setDefcnt] = useState([]);
   const [NewWorld50m, setNewWorld50m] = useState([world50m]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     let endpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211109`;
@@ -15,6 +16,7 @@ export const SearchPage = props => {
       setDefcnt(res.data.response.body.items.item);
     });
   }, []);
+
   useEffect(() => {
     const filtercnt = nation => {
       let cnt = 0;
@@ -23,6 +25,7 @@ export const SearchPage = props => {
       });
       return cnt;
     };
+
     NewWorld50m.map((item, index) => {
       item.objects.units.geometries.map((geo, i) => {
         geo.properties = {
@@ -31,6 +34,7 @@ export const SearchPage = props => {
         };
       });
     });
+    
     console.log(5555555555, NewWorld50m);
     console.log(5555555555, world50m);
   }, [Defcnt]);
