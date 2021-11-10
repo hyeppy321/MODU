@@ -29,8 +29,8 @@ export const SearchPage = props => {
         ...item.properties,
         natDefCnt: filtercnt(item.properties.ADMIN),
       };
-      console.log(item);
     });
+    console.log(NewFeatures);
   }, [Defcnt]);
 
   return (

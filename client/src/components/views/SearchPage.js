@@ -1,5 +1,6 @@
 import Page from 'components/Page';
 import React, { useEffect, useState } from 'react';
+import { features } from '../../assets/geo-data/countries.json';
 import { MdSearch, MdCoronavirus, MdAirplanemodeActive } from 'react-icons/md';
 import SearchInput from 'components/SearchInput';
 import { NumberWidget, IconWidget } from '../../components/Widget';
@@ -26,6 +27,8 @@ import {
   TravelWarning_URL,
   TravelWarningInfo_URL,
   SptravelWarningService_URL,
+  Weather_URI,
+  Weather_KEY,
 } from '../Config';
 import Axios from 'axios';
 
@@ -35,17 +38,19 @@ export const SearchPage = props => {
     { iso: 'NL', kr: '네덜란드' },
     { iso: 'MK', kr: '북마케도니아' },
   ];
+  const [Nation, setNation] = useState(features);
   const [Info, setInfo] = useState([]);
   const [ReturnType, setReturnType] = useState('JSON');
   const [NumOfRows, setNumOfRows] = useState(10);
   const [PageNo, setPageNo] = useState(1);
-  const [CountryName, setCountryName] = useState(nation[0].kr);
-  const [CountryIso, setCountryIso] = useState(nation[0].iso);
+  const [CountryName, setCountryName] = useState(Nation[0].properties.NAME);
+  const [CountryIso, setCountryIso] = useState(Nation[0].properties.ISO_A2);
   const [InfoVisible, setInfoVisible] = useState(false);
   const [Title, setTitle] = useState('');
   const [Content, setContent] = useState('');
   const [InfoCorona, setInfoCorona] = useState([]);
-  const [Defcnt, setDefcnt] = useState([]);
+  const [DefCnt, setDefCnt] = useState({});
+  const [IsInfo, setIsInfo] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -53,7 +58,33 @@ export const SearchPage = props => {
     Axios.get(endpointInfo1).then(res => {
       setInfoCorona(res.data.response.body.items.item);
     });
+    // features.map(item => {
+    //   console.log('aaaaaaaaa', item.properties.NAME);
+    // });
+    //"http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+"내APIKEY"
+    let endpointInfo2 = `${Weather_URI}?q=seoul&appid=${Weather_KEY}`;
+    Axios.get(endpointInfo2).then(res => {
+      console.log('----==+++', res);
+    });
   }, []);
+
+  const filterCnt = name => {
+    InfoCorona.filter(item => item.nationNm.indexOf(name) != -1).map(data => {
+      let tmp = {
+        natDefCnt: data.natDefCnt,
+        natDeathRate: {
+          value: Math.round(data.natDeathRate * 100),
+          label: '사망률',
+        },
+        natDeathCnt: data.natDeathCnt,
+        nm: data.nationNm,
+      };
+      setDefCnt(tmp);
+      // console.log('ㅡㅡㅡㅡ', Math.round(data.natDeathRate * 100));
+      // console.log(data);
+      // console.log(11111111, DefCnt);
+    });
+  };
 
   const onCountryNameHandler = event => {
     setCountryName(event.currentTarget.value);
@@ -65,22 +96,19 @@ export const SearchPage = props => {
     setInfoVisible(true);
     console.log(4444444444, CountryName, CountryIso);
     getArrivalsServiceInfo();
+    filterCnt(CountryName);
   };
+
   useEffect(() => {
     const filterNameToIso = name => {
-      nation
-        .filter(item => item.kr.indexOf(name) != -1)
+      features
+        .filter(item => item.properties.NAME.indexOf(name) != -1)
         .map(data => {
-          setCountryIso(data.iso);
+          setCountryIso(data.properties.ISO_A2);
         });
     };
-    const filterCnt = name => {
-      InfoCorona.filter(item => item.nationNm.indexOf(name) != -1).map(data => {
-        console.log(data);
-      });
-    };
+
     filterNameToIso(CountryName);
-    filterCnt(CountryName);
   }, [CountryName]);
 
   const getArrivalsServiceInfo = () => {
@@ -91,13 +119,19 @@ export const SearchPage = props => {
       `&cond[country_iso_alp2::EQ]=${CountryIso}`;
     Axios.get(endpointInfo).then((res, body) => {
       if (res.data.resultMsg === '정상') {
-        console.log(111, res.data.data);
-        res.data.data.map((item, index) => {
-          setTitle(item.title);
-          setContent(item.txt_origin_cn);
-          // console.log(item.title);
-          // console.log(item.txt_origin_cn);
-        });
+        if (res.data.data.length == 0) {
+          setIsInfo(false);
+        } else {
+          setIsInfo(true);
+          console.log(111, res.data.data);
+          console.log(23233, res.data.data.length);
+          res.data.data.map((item, index) => {
+            setTitle(item.title);
+            setContent(item.txt_origin_cn);
+            // console.log(item.title);
+            // console.log(item.txt_origin_cn);
+          });
+        }
       }
     });
   };
@@ -112,7 +146,7 @@ export const SearchPage = props => {
         <Col md="6">
           <Card className="mb-3">
             <CardHeader>
-              국가명을 입력해주세요.
+              국가를 선택해주세요.
               <Form inline className="cr-search-form" onSubmit={handleSubmit}>
                 <Input
                   type="select"
@@ -120,8 +154,8 @@ export const SearchPage = props => {
                   value={CountryName}
                   onChange={onCountryNameHandler}
                 >
-                  {nation.map((data, index) => {
-                    return <option>{data.kr}</option>;
+                  {features.map((data, index) => {
+                    return <option>{data.properties.NAME}</option>;
                   })}
                 </Input>
                 &nbsp;&nbsp;&nbsp;
@@ -133,36 +167,44 @@ export const SearchPage = props => {
           </Card>
         </Col>
       </Row>
-      {InfoVisible && (
+      {IsInfo && InfoVisible && (
         <Row>
-          <Col key={1} lg={4} md={6} sm={6} xs={12} className="mb-3">
-            <NumberWidget
-              title="코로나 감염 현황"
-              subtitle="금일"
-              number="사망자수"
-              color="red"
-              progress={{
-                value: 75,
-                label: '사망률',
-              }}
+          <Col lg={4} md={6} sm={6} xs={12} className="mb-3">
+            <IconWidget
+              bgColor={'secondary'}
+              icon={MdCoronavirus}
+              title="코로나 확진자 수"
+              subtitle={DefCnt.natDefCnt + '명'}
             />
           </Col>
           <Col lg={4} md={6} sm={6} xs={12} className="mb-3">
             <IconWidget
-              bgColor={'primary'}
-              icon={MdAirplanemodeActive}
-              title="gg"
-              subtitle="ggg"
+              bgColor={'secondary'}
+              icon={MdCoronavirus}
+              title="코로나 사망자 수"
+              subtitle={DefCnt.natDeathCnt + '명'}
             />
           </Col>
         </Row>
       )}
-      {InfoVisible && (
+      {IsInfo && InfoVisible && (
         <Row>
           <Col>
             <Card className="mb-3">
               <CardHeader>{Title} </CardHeader>
               <CardBody>{Content}</CardBody>
+            </Card>
+          </Col>
+        </Row>
+      )}
+      {!IsInfo && InfoVisible && (
+        <Row>
+          <Col>
+            <Card className="mb-3">
+              <CardHeader>
+                각국의 해외입국자에 대한 조치 현황(국가 순서별)
+              </CardHeader>
+              <CardBody>정보가 없습니다.</CardBody>
             </Card>
           </Col>
         </Row>

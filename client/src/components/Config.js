@@ -33,3 +33,8 @@ export const TravelWarningInfo_URL =
 
 export const SptravelWarningService_URL =
   'http://apis.data.go.kr/1262000/SptravelWarningService2/getSptravelWarningList2'; // 국가∙지역별 특별여행주의보
+
+export const Weather_URI = 'http://api.openweathermap.org/data/2.5/weather';
+// "http://api.openweathermap.org/data/2.5/weather?q=seoul&appid=655cbe1696da4bc5a0225adc19cc4179
+
+export const Weather_KEY = '655cbe1696da4bc5a0225adc19cc4179';
