@@ -34,6 +34,9 @@ const InsightPage = React.lazy(() => import('./components/views/InsightPage'));
 const GeoWithDefcnt = React.lazy(() =>
   import('./components/precleaning/GeoWithDefcnt'),
 );
+const TravleAlarmData = React.lazy(() =>
+  import('./components/precleaning/TravelAlarmData'),
+);
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -96,6 +99,7 @@ class App extends React.Component {
                 <Route exact path="/input-groups" component={InputGroupPage} />
                 <Route exact path="/charts" component={ChartPage} />
                 <Route exact path="/test" component={GeoWithDefcnt} />
+                <Route exact path="/test2" component={TravleAlarmData} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />

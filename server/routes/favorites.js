@@ -7,7 +7,7 @@ router.post("/favorited", (req, res) => {
 
   //mongoDB에서 favorite 숫자 가져오기
   Favorite.find({
-    nationIso2: req.body.nationIso2,
+    nationKrNm: req.body.nationKrNm,
     userFrom: req.body.userFrom,
   }).exec((err, info) => {
     if (err) return res.status(400).send(err);
@@ -25,7 +25,7 @@ router.post("/favorited", (req, res) => {
 
 router.post("/removeFromFavorite", (req, res) => {
   Favorite.findOneAndDelete({
-    nationIso2: req.body.nationIso2,
+    nationKrNm: req.body.nationKrNm,
     userFrom: req.body.userFrom,
   }).exec((err, doc) => {
     if (err) return res.status(400).send(err);
