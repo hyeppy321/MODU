@@ -12,13 +12,17 @@ const IconWidget = ({
   title,
   subtitle,
   className,
+  Onclick,
+  OnMouseOver,
+  OnMouseOut,
   ...restProps
 }) => {
   const classes = classNames('cr-widget', className, {
     [`bg-${bgColor}`]: bgColor,
   });
   return (
-    <Card inverse className={classes} {...restProps}>
+    <div onClick={Onclick} onMouseOver={OnMouseOver} onMouseOut={OnMouseOut}>
+    <Card inverse className={classes} {...restProps} >
       <CardBody className="cr-widget__icon">
         <Icon size={50} {...iconProps} />
       </CardBody>
@@ -27,6 +31,7 @@ const IconWidget = ({
         <CardSubtitle>{subtitle}</CardSubtitle>
       </CardBody>
     </Card>
+    </div>
   );
 };
 
@@ -36,6 +41,9 @@ IconWidget.propTypes = {
   iconProps: PropTypes.object,
   title: PropTypes.string,
   subtitle: PropTypes.string,
+  Onclick: PropTypes.func,
+  OnMouseOver: PropTypes.func,
+  OnMouseOut: PropTypes.func,
 };
 
 IconWidget.defaultProps = {

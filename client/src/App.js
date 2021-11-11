@@ -41,6 +41,7 @@ const TravleAlarmData = React.lazy(() =>
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
 };
+const WarningInfoPage = React.lazy(() => import('./components/views/WarningInfoPage'));
 
 class App extends React.Component {
   render() {
@@ -100,6 +101,7 @@ class App extends React.Component {
                 <Route exact path="/charts" component={ChartPage} />
                 <Route exact path="/test" component={GeoWithDefcnt} />
                 <Route exact path="/test2" component={TravleAlarmData} />
+                <Route exact path="/warning-info" component={WarningInfoPage} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />
