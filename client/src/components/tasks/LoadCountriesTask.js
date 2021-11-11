@@ -2,6 +2,7 @@ import { features } from 'assets/geo-data/countries.json';
 import React, { useEffect, useState } from 'react';
 import { API_ENCODED_KEY, getCovid19NatInfStateJson_URL } from '../Config';
 import Axios from 'axios';
+import legendItems from '../../entities/LegendItems';
 
 class LoadCountriesTask {
   setState = null;
@@ -56,10 +57,21 @@ class LoadCountriesTask {
             mapCountry.properties.confirmed = confirmed;
             mapCountry.properties.confirmedText = this.#formatNumberWithCommas(confirmed);
         }
+
+        this.#setCountryColor(mapCountry);
     }
 
     this.setState(this.mapCountries);
   };
+
+  #setCountryColor = (country) => {
+    const legendItem = legendItems.find((item) =>
+      item.isFor(country.properties.confirmed)
+    );
+
+    if (legendItem != null) country.properties.color = legendItem.color;
+  };
+
 
     #formatNumberWithCommas = (number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
