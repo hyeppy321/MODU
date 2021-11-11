@@ -22,6 +22,9 @@ export const KoreaDepartureService_URL =
 export const getCovid19NatInfStateJson_URL =
   'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19NatInfStateJson'; // 보건복지부 코로나19해외발생 현황
 
+export const getCovid19InfStateJson_URL = 
+  'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson'; // 보건복지부 코로나19 감염현황
+
 export const getTravelAlarm_URL =
   'http://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2'; // 국가∙지역별 여행경보
 
@@ -44,3 +47,6 @@ export const TravelSpecialWarningService_URL =
 
 export const chanbi_key =
   'V19PpK7VUIMrF9WqDKk%2BgZRET7zWU34lPAAJyIEe96VmWDu%2FhGu9B%2Bcon3Dn%2FP4Oj74lzzyuV7aqEBKvc5xRkw%3D%3D';
+
+export const yeongin_key =
+  'qUnQJ2qjsQ38NOd3FvjN4BKHgEzg5tZwfb0%2BWThnkETsqkGcAgCKXg3rPwQoohdGMR4vSQ8CaHmxQNomvSVrbQ%3D%3D';
