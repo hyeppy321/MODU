@@ -8,7 +8,7 @@ const CovidMap = ({countries}) => {
         fillColor:"white",
         weight:2,
         color:"black",
-        fillOpacity:0.7,
+        fillOpacity:1,
     };
     
     const onEachCountry = (country, layer) => {
