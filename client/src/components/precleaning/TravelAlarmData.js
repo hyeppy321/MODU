@@ -5,6 +5,7 @@ import {
   API_ENCODED_KEY,
   getTravelAlarm_URL,
   TravelSpecialWarningService_URL,
+  chanbi_key,
 } from '../Config';
 import { IconWidget } from '../Widget';
 import { MdReport } from 'react-icons/md';
