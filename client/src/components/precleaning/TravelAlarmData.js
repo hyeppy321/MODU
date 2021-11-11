@@ -113,10 +113,10 @@ export const SearchPage = props => {
       }
     });
   };
-  console.log(TravelAlarm);
+  // console.log(TravelAlarm);
   if (TravelAlarm.length == 237) {
     filterNation(Nation);
-    console.log(TravelAlarm);
+    // console.log(TravelAlarm);
   }
 
   return (

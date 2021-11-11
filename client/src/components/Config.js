@@ -39,5 +39,8 @@ export const Weather_URI = 'http://api.openweathermap.org/data/2.5/weather';
 
 export const Weather_KEY = '655cbe1696da4bc5a0225adc19cc4179';
 
-export const TravelSpecialWarningService_URL = 
-'http://apis.data.go.kr/1262000/TravelSpecialWarningService/getTravelSpecialWarningList' //특별여행경보
+export const TravelSpecialWarningService_URL =
+  'http://apis.data.go.kr/1262000/TravelSpecialWarningService/getTravelSpecialWarningList'; //특별여행경보
+
+export const chanbi_key =
+  'V19PpK7VUIMrF9WqDKk%2BgZRET7zWU34lPAAJyIEe96VmWDu%2FhGu9B%2Bcon3Dn%2FP4Oj74lzzyuV7aqEBKvc5xRkw%3D%3D';
