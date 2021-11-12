@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_ENCODED_KEY, getCovid19NatInfStateJson_URL,getCovid19InfStateJson_URL,chanbi_key } from '../Config';
+import { API_ENCODED_KEY, getCovid19NatInfStateJson_URL,chanbi_key,yeongin_key } from '../Config';
 import { Card, CardBody, CardHeader} from 'reactstrap';
 import { getColor } from 'utils/colors';
 import { Line} from 'react-chartjs-2';
@@ -12,19 +12,16 @@ const Chart2 = () => {
 
   useEffect(() => {
         window.scrollTo(0, 0);
-        let endpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20210501`; 
-        //let endpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20210501`; //한국코로나19현황
+        let endpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${yeongin_key}&startCreateDt=20210501`; 
 
         const fetchEvents = async() =>{
             const res = await axios.get(endpointInfo);
-            console.log(res);
             makeData(res.data.response.body.items.item);
             setLoad(false);
         }
 
         const makeData = (items) =>{
             const arr = items.reduce((acc,cur)=>{
-                console.log(cur);
                 const currentDate = new Date(cur.createDt);
                 const year = currentDate.getFullYear();
                 const month = currentDate.getMonth();
@@ -53,7 +50,7 @@ const Chart2 = () => {
                 labels,
                 datasets:[
                     {
-                        label: '한국 누적 확진자',
+                        label: '국내 누적 확진자',
                         backgroundColor: getColor('primary'),
                         borderColor: getColor('primary'),
                         borderWidth: 1,
@@ -68,7 +65,7 @@ const Chart2 = () => {
 
     return (
         <Card>
-            <CardHeader>Chart 1</CardHeader>
+            <CardHeader>국내 누적 확진자</CardHeader>
             <CardBody>
               {Load === true ? (
                 <Loading/>
