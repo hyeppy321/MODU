@@ -4,6 +4,7 @@ import {
   API_ENCODED_KEY,
   getCovid19NatInfStateJson_URL,
   chanbi_key,
+  yeongin_key,
 } from '../Config';
 import Axios from 'axios';
 import legendItems from '../../entities/LegendItems';
@@ -30,14 +31,16 @@ class LoadCountriesTask {
 
   load = async setState => {
     this.setState = setState;
-    this.yesterdayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=${this.yesterday}&endCreateDt=${this.yesterday}`;
-    this.todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=${this.today}`;
+    this.yesterdayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=${this.yesterday}&endCreateDt=${this.yesterday}`;
+    this.todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=${this.today}`;
     await Axios.get(this.yesterdayEndpointInfo).then(res => {
       // console.log(res.data.response.body.items.item);
+      console.log(res.data);
       this.yesterdayDefcnt = res.data.response.body.items.item;
     });
     await Axios.get(this.todayEndpointInfo).then(res => {
       // console.log(res.data.response.body.items.item);
+      console.log(res.data);
       this.todayDefcnt = res.data.response.body.items.item;
     });
 

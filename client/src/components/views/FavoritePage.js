@@ -84,7 +84,7 @@ function FavoritePage(props) {
                           key={index}
                           // onClick={onClickHandler(data.nationKrNm)}
                         >
-                          <th scope="row">{index}</th>
+                          <th scope="row">{index + 1}</th>
                           <td>{data.nationKrNm}</td>
                           <td>{data.nationEnNm}</td>
                           <td>{data.nationIso2}</td>

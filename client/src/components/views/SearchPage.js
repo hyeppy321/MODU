@@ -43,6 +43,7 @@ import {
   Weather_URI,
   Weather_KEY,
   chanbi_key,
+  yeongin_key,
 } from '../Config';
 
 export const SearchPage = props => {
@@ -86,7 +87,7 @@ export const SearchPage = props => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20211110`;
+    let endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211110`;
     Axios.get(endpointInfo1).then(res => {
       setCoronaInfo(res.data.response.body.items.item);
     });

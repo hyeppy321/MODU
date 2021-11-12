@@ -81,6 +81,11 @@ class App extends React.Component {
                   path="/favorite"
                   component={Auth(FavoritePage, true)}
                 />
+                <Route
+                  exact
+                  path="/warning-info"
+                  component={Auth(WarningInfoPage, null)}
+                />
                 <Route exact path="/dashboard" component={DashboardPage} />
                 <Route exact path="/login-modal" component={AuthModalPage} />
                 <Route exact path="/buttons" component={ButtonPage} />
@@ -103,7 +108,6 @@ class App extends React.Component {
                 <Route exact path="/charts" component={ChartPage} />
                 <Route exact path="/test" component={GeoWithDefcnt} />
                 <Route exact path="/test2" component={TravleAlarmData} />
-                <Route exact path="/warning-info" component={WarningInfoPage} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />
