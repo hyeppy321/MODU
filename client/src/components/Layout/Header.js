@@ -41,16 +41,6 @@ function Header(props) {
     });
   };
 
-  const toggleNotificationPopover = () => {
-    setState({
-      isOpenNotificationPopover: !State.isOpenNotificationPopover,
-    });
-
-    if (!State.isNotificationConfirmed) {
-      setState({ isNotificationConfirmed: true });
-    }
-  };
-
   const toggleUserCardPopover = () => {
     setState({
       isOpenUserCardPopover: !State.isOpenUserCardPopover,

@@ -3,7 +3,6 @@ import Page from 'components/Page';
 import React, { useEffect, useState } from 'react';
 import { API_ENCODED_KEY, getCovid19NatInfStateJson_URL } from '../Config';
 import Axios from 'axios';
-import { Geographies, Geography } from 'react-simple-maps';
 
 export const SearchPage = props => {
   const [Defcnt, setDefcnt] = useState([]);
@@ -19,19 +18,21 @@ export const SearchPage = props => {
   useEffect(() => {
     const filtercnt = nation => {
       let cnt = 0;
-      Defcnt.filter(item => item.nationNmEn.indexOf(nation) != -1).map(item => {
-        console.log(item);
-        cnt = item.natDefCnt;
-      });
+      Defcnt.filter(item => item.nationNmEn.indexOf(nation) !== -1).map(
+        item => {
+          console.log(item);
+          cnt = item.natDefCnt;
+        },
+      );
       return cnt;
     };
-    NewFeatures.map((item, index) => {
+    NewFeatures.map(item => {
       item.properties = {
         ...item.properties,
         natDefCnt: filtercnt(item.properties.ADMIN),
       };
     });
-    console.log(NewFeatures);
+    // console.log(NewFeatures);
   }, [Defcnt]);
 
   return (

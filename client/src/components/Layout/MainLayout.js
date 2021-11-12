@@ -5,8 +5,6 @@ import {
   // MdCardGiftcard,
   MdLoyalty,
 } from 'react-icons/md';
-import NotificationSystem from 'react-notification-system';
-import { NOTIFICATION_SYSTEM_STYLE } from 'utils/constants';
 
 class MainLayout extends React.Component {
   static isSidebarOpen() {
@@ -96,14 +94,6 @@ class MainLayout extends React.Component {
           {children}
           <Footer />
         </Content>
-
-        {/* <NotificationSystem
-          dismissible={false}
-          ref={notificationSystem =>
-            (this.notificationSystem = notificationSystem)
-          }
-          style={NOTIFICATION_SYSTEM_STYLE}
-        /> */}
       </main>
     );
   }

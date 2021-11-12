@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-import Page from 'components/Page';
 import {
   API_ENCODED_KEY,
   getTravelAlarm_URL,
@@ -9,7 +8,7 @@ import {
 } from '../Config';
 import { IconWidget } from '../Widget';
 import { MdReport } from 'react-icons/md';
-import { Row, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 
 export const SearchPage = props => {
   const [Alarm, setAlarm] = useState([]);
@@ -53,7 +52,7 @@ export const SearchPage = props => {
   }, [Alarm]);
 
   useEffect(() => {
-    SpAlarm.filter(sp => sp.splimit != undefined).map(item => {
+    SpAlarm.filter(sp => sp.splimit !== undefined).map(item => {
       setTravelAlarm(prevState => [
         ...prevState,
         {
@@ -65,7 +64,7 @@ export const SearchPage = props => {
         },
       ]);
     });
-    SpAlarm.filter(sp => sp.splimitPartial != undefined).map(item => {
+    SpAlarm.filter(sp => sp.splimitPartial !== undefined).map(item => {
       setTravelAlarm(prevState => [
         ...prevState,
         {
@@ -77,7 +76,7 @@ export const SearchPage = props => {
         },
       ]);
     });
-    SpAlarm.filter(sp => sp.spbanYna != undefined).map(item => {
+    SpAlarm.filter(sp => sp.spbanYna !== undefined).map(item => {
       setTravelAlarm(prevState => [
         ...prevState,
         {
@@ -89,7 +88,7 @@ export const SearchPage = props => {
         },
       ]);
     });
-    SpAlarm.filter(sp => sp.spbanYnPartial != undefined).map(item => {
+    SpAlarm.filter(sp => sp.spbanYnPartial !== undefined).map(item => {
       setTravelAlarm(prevState => [
         ...prevState,
         {
@@ -104,18 +103,20 @@ export const SearchPage = props => {
   }, [SpAlarm]);
 
   const filterNation = name => {
-    TravelAlarm.filter(item => item.countryNm.indexOf(name) != -1).map(data => {
-      // console.log(data.level);
-      if (name == data.countryNm) {
-        NationInfo = {
-          level: data.level,
-          note: data.note,
-        };
-      }
-    });
+    TravelAlarm.filter(item => item.countryNm.indexOf(name) !== -1).map(
+      data => {
+        // console.log(data.level);
+        if (name === data.countryNm) {
+          NationInfo = {
+            level: data.level,
+            note: data.note,
+          };
+        }
+      },
+    );
   };
   // console.log(TravelAlarm);
-  if (TravelAlarm.length == 237) {
+  if (TravelAlarm.length === 237) {
     filterNation(Nation);
     // console.log(TravelAlarm);
   }

@@ -17,7 +17,7 @@ function Chart2() {
   let arr = [];
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20210501`;
+    let endpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20210501`;
     Axios.get(endpointInfo).then(res => {
       makeData(res.data.response.body.items.item);
       setLoad(false);

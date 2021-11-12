@@ -32,11 +32,9 @@ function InsightPage(props) {
   return (
     <Page>
       <Row>
-        <Col>
-          <Covid19 />
-        </Col>
+        <Col>{/* <Covid19 /> */}</Col>
       </Row>
-      <CovidChart />
+      {/* <CovidChart /> */}
     </Page>
   );
 }
