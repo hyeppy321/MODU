@@ -28,6 +28,7 @@ import {
   MdFavorite,
   MdSearch,
   MdAirplanemodeActive,
+  MdPanTool,
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -102,6 +103,7 @@ function Sidebar(props) {
   const navItems = [
     { to: '/', name: 'insight', exact: true, Icon: MdAirplanemodeActive },
     { to: '/search', name: 'search', exact: true, Icon: MdSearch },
+    { to: '/warning-info', name: 'WarningInfo', exact: true, Icon: MdPanTool },
     { to: '/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
     { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
     { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },

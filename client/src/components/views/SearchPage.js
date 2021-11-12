@@ -42,6 +42,7 @@ import {
   SptravelWarningService_URL,
   Weather_URI,
   Weather_KEY,
+  chanbi_key,
 } from '../Config';
 
 export const SearchPage = props => {
@@ -85,15 +86,22 @@ export const SearchPage = props => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211110`;
+    let endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20211110`;
     Axios.get(endpointInfo1).then(res => {
       setCoronaInfo(res.data.response.body.items.item);
     });
+    if (props.location.name !== undefined) {
+      init();
+    }
     // features.map(item => {
     //   console.log('aaaaaaaaa', item.properties.NAME);
     // });
     //"http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+"내APIKEY"
   }, []);
+
+  const init = () => {
+    setCountryName(props.location.name);
+  };
 
   const filterCnt = name => {
     CoronaInfo.filter(item => item.nationNm.indexOf(name) != -1).map(data => {

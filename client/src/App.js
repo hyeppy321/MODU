@@ -37,11 +37,13 @@ const GeoWithDefcnt = React.lazy(() =>
 const TravleAlarmData = React.lazy(() =>
   import('./components/precleaning/TravelAlarmData'),
 );
+const WarningInfoPage = React.lazy(() =>
+  import('./components/views/WarningInfoPage'),
+);
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
 };
-const WarningInfoPage = React.lazy(() => import('./components/views/WarningInfoPage'));
 
 class App extends React.Component {
   render() {
