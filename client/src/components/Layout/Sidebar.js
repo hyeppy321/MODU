@@ -1,4 +1,5 @@
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
+import logo from '../../assets/img/logo/logo.png';
 import SourceLink from 'components/SourceLink';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -51,6 +52,7 @@ function Sidebar(props) {
       <div className={bem.e('content')}>
         <Navbar>
           <SourceLink className="navbar-brand d-flex">
+            <img src={logo} width="40" height="30" className="pr-2" alt="" />
             <span className="text-white">여행 다모아</span>
           </SourceLink>
         </Navbar>

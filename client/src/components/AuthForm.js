@@ -1,4 +1,4 @@
-import logo200Image from 'assets/img/logo/logo_200.png';
+import logo from 'assets/img/logo/logo.png';
 import Axios from 'axios';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -14,7 +14,6 @@ function AuthForm(props) {
 
   const onEmailHandler = event => {
     setEmail(event.currentTarget.value);
-    console.log(Email);
   };
 
   const onPasswordHandler = event => {
@@ -35,7 +34,6 @@ function AuthForm(props) {
 
   const changeAuthState = authState => event => {
     event.preventDefault();
-
     props.onChangeAuthState(authState);
   };
 
@@ -60,11 +58,10 @@ function AuthForm(props) {
       if (Password == ConfirmPassword) {
         dispatch(registerUser(body)).then(res => {
           if (res.payload.success) {
-            console.log('회원가입 성공');
-            // changeAuthState(STATE_LOGIN);
             props.onChangeAuthState(STATE_LOGIN);
           } else {
-            console.log(res.payload);
+            alert('회원가입에 실패했습니다.');
+            // console.log(res.payload);
           }
         });
       } else {
@@ -95,7 +92,7 @@ function AuthForm(props) {
       {showLogo && (
         <div className="text-center pb-4">
           <img
-            src={logo200Image}
+            src={logo}
             className="rounded"
             style={{ width: 60, height: 60, cursor: 'pointer' }}
             alt="logo"

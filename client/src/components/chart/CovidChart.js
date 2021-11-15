@@ -10,7 +10,7 @@ const CovidChart = () => {
         <Chart1 />
       </Col>
       <Col xl={6} lg={12} md={12}>
-        <Chart2 />
+        {/* <Chart2 /> */}
       </Col>
     </Row>
   );

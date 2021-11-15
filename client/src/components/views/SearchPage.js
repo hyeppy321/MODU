@@ -3,8 +3,17 @@ import { useSelector } from 'react-redux';
 import Axios from 'axios';
 import Page from 'components/Page';
 import { features } from '../../assets/geo-data/countries.json';
-import { MdCoronavirus, MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 import { IconWidget } from '../../components/Widget';
+import WeatherWidget from '../Widget/WeatherWidget';
+import TravleAlarmData from '../precleaning/TravelAlarmData';
+import {
+  ArrivalsService_URL,
+  API_ENCODED_KEY,
+  getCovid19NatInfStateJson_URL,
+  Weather_URI,
+  Weather_KEY,
+} from '../Config';
+import { MdCoronavirus, MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 import {
   WiSolarEclipse,
   WiDayCloudy,
@@ -16,8 +25,6 @@ import {
   WiSnow,
   WiFog,
 } from 'weather-icons-react';
-import WeatherWidget from '../Widget/WeatherWidget';
-import TravleAlarmData from '../precleaning/TravelAlarmData';
 import {
   Row,
   Col,
@@ -27,24 +34,7 @@ import {
   Button,
   Form,
   Input,
-  Label,
 } from 'reactstrap';
-import {
-  SafetyNews_URL,
-  ArrivalsService_URL,
-  API_ENCODED_KEY,
-  getCovid19NatInfStateJson_URL,
-  EntranceVisaService_URL,
-  KoreaDepartureService_URL,
-  getTravelAlarm_URL,
-  TravelWarning_URL,
-  TravelWarningInfo_URL,
-  SptravelWarningService_URL,
-  Weather_URI,
-  Weather_KEY,
-  chanbi_key,
-  yeongin_key,
-} from '../Config';
 
 export const SearchPage = props => {
   const user = useSelector(state => state.user);
@@ -87,17 +77,13 @@ export const SearchPage = props => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20211110`;
+    let endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211109&endCreateDt=20211109`;
     Axios.get(endpointInfo1).then(res => {
       setCoronaInfo(res.data.response.body.items.item);
     });
     if (props.location.name !== undefined) {
       init();
     }
-    // features.map(item => {
-    //   console.log('aaaaaaaaa', item.properties.NAME);
-    // });
-    //"http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+"내APIKEY"
   }, []);
 
   const init = () => {
@@ -118,9 +104,6 @@ export const SearchPage = props => {
         };
         setDefCnt(tmp);
       }
-      // console.log('ㅡㅡㅡㅡ', Math.round(data.natDeathRate * 100));
-      // console.log(data);
-      // console.log(11111111, DefCnt);
     });
   };
 
@@ -138,7 +121,6 @@ export const SearchPage = props => {
     if (!IsFavorited) {
       Axios.post(`/api/favorite/addToFavorite`, data).then(res => {
         if (res.data.success) {
-          // console.log('성공');
           setIsFavorited(true);
         } else {
           alert('저장하지 못했습니다.');
@@ -157,7 +139,6 @@ export const SearchPage = props => {
     event.preventDefault();
 
     setVisible(true);
-    // console.log(4444444444, CountryName, CountryIso);
     getArrivalsServiceInfo();
     filterCnt(CountryName);
     getWeatherInfo();
@@ -171,7 +152,6 @@ export const SearchPage = props => {
     Axios.post('/api/favorite/favorited', data).then(res => {
       if (res.data.success) {
         setIsFavorited(res.data.favorited);
-        // console.log(res.data);
       }
     });
     const filterNameToIso = name => {
@@ -199,7 +179,6 @@ export const SearchPage = props => {
         wind: res.data.wind.speed,
         cloud: res.data.clouds.all + '%',
       };
-      // console.log(res.data.weather[0].icon);
       setWeatherInfo(tmp);
     });
   };
@@ -216,13 +195,9 @@ export const SearchPage = props => {
           setIsInfo(false);
         } else {
           setIsInfo(true);
-          // console.log(111, res.data.data);
-          // console.log(23233, res.data.data.length);
-          res.data.data.map((item, index) => {
+          res.data.data.map(item => {
             setTitle(item.title);
             setContent(item.txt_origin_cn);
-            // console.log(item.title);
-            // console.log(item.txt_origin_cn);
           });
         }
       }

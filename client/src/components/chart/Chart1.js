@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import {
-  API_ENCODED_KEY,
-  getCovid19InfStateJson_URL,
-  chanbi_key,
-  yeongin_key,
-} from '../Config';
+import Axios from 'axios';
+import moment from 'moment';
+import { getCovid19InfStateJson_URL, yeongin_key } from '../Config';
+import Loading from '../map/Loading';
+import { Line } from 'react-chartjs-2';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import { getColor } from 'utils/colors';
-import { Line } from 'react-chartjs-2';
-import Axios from 'axios';
-import Loading from '../map/Loading';
 
 function Chart1() {
   const [Load, setLoad] = useState(true);
   const [ConfirmedData, setConfirmedData] = useState({});
+  let arrReverse = [];
   let arr = [];
-  useEffect(() => {
+  useEffect(async () => {
     window.scrollTo(0, 0);
-    let endpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20210501`;
-    Axios.get(endpointInfo).then(res => {
+    let endpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${yeongin_key}&startCreateDt=20211108&endCreateDt=2021112`;
+    await Axios.get(endpointInfo).then(res => {
+      console.log(res.data);
       makeData(res.data.response.body.items.item);
+      arrReverse = [...arr].reverse();
       setLoad(false);
     });
-    const arrReverse = [...arr].reverse();
-    const labels = arrReverse.map(a => `${a.date + 1}일`);
+    const labels = arrReverse.map(a => `${a.month}월 ${a.date}일`);
     setConfirmedData({
       labels,
       datasets: [
@@ -31,23 +29,25 @@ function Chart1() {
           label: '국내 치료 중인 환자 수',
           backgroundColor: getColor('primary'),
           borderColor: getColor('primary'),
-          borderWidth: 1,
+          borderWidth: 2,
+          fill: false,
           data: arrReverse.map(a => a.careCnt),
         },
       ],
     });
   }, []);
+
   const makeData = items => {
-    arr = items.reduce((acc, cur) => {
-      const currentDate = new Date(cur.createDt);
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
-      const date = currentDate.getDate();
-      const careCnt = cur.careCnt;
-
-      acc.push({ year, month, date, careCnt });
-
-      return acc;
+    items.map(item => {
+      arr = [
+        ...arr,
+        {
+          year: moment(item.createDt).format('YY'),
+          month: moment(item.createDt).format('MM'),
+          date: moment(item.createDt).format('DD'),
+          careCnt: item.careCnt,
+        },
+      ];
     });
   };
 

@@ -1,67 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import {
-  API_ENCODED_KEY,
-  getCovid19NatInfStateJson_URL,
-  chanbi_key,
-  yeongin_key,
-} from '../Config';
+import Axios from 'axios';
+import moment from 'moment';
+import { getCovid19InfStateJson_URL, chanbi_key } from '../Config';
+import Loading from '../map/Loading';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import { getColor } from 'utils/colors';
 import { Line } from 'react-chartjs-2';
-import Axios from 'axios';
-import Loading from '../map/Loading';
 
 function Chart2() {
   const [Load, setLoad] = useState(true);
   const [ConfirmedData, setConfirmedData] = useState({});
   let arr = [];
-  useEffect(() => {
+  let arrReverse = [];
+  useEffect(async () => {
     window.scrollTo(0, 0);
-    let endpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20210501`;
-    Axios.get(endpointInfo).then(res => {
+    let endpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20211108&endCreateDt=2021112`;
+    await Axios.get(endpointInfo).then(res => {
       makeData(res.data.response.body.items.item);
+      arrReverse = [...arr].reverse();
       setLoad(false);
     });
-    const arrReverse = [...arr].reverse();
-    const labels = arrReverse.map(a => `${a.month + 1}월`);
+    const labels = arrReverse.map(a => `${a.month}월 ${a.date}일`);
     setConfirmedData({
       labels,
       datasets: [
         {
           label: '국내 누적 확진자',
-          backgroundColor: getColor('primary'),
-          borderColor: getColor('primary'),
-          borderWidth: 1,
+          backgroundColor: getColor('secondary'),
+          borderColor: getColor('secondary'),
+          borderWidth: 2,
           fill: false,
-          data: arrReverse.map(a => a.natDefCnt),
+          data: arrReverse.map(a => a.decideCnt),
         },
       ],
     });
   }, []);
+
   const makeData = items => {
-    arr = items.reduce((acc, cur) => {
-      const currentDate = new Date(cur.createDt);
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
-      const date = currentDate.getDate();
-      const natDefCnt = cur.natDefCnt;
-      const nationNm = 'South Korea';
-      const findItem = acc.find(
-        a => a.year === year && a.month === month && a.nationNm === nationNm,
-      );
-
-      if (!findItem) {
-        acc.push({ year, month, natDefCnt, nationNm });
-      }
-
-      if (findItem) {
-        findItem.nationNm = nationNm;
-        findItem.natDefCnt = natDefCnt;
-        findItem.date = date;
-        findItem.year = year;
-        findItem.month = month;
-      }
-      return acc;
+    items.map(item => {
+      arr = [
+        ...arr,
+        {
+          year: moment(item.createDt).format('YY'),
+          month: moment(item.createDt).format('MM'),
+          date: moment(item.createDt).format('DD'),
+          decideCnt: item.decideCnt,
+        },
+      ];
     });
   };
 
