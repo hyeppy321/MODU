@@ -12,14 +12,18 @@ function Chart2() {
   const [ConfirmedData, setConfirmedData] = useState({});
   let arr = [];
   let arrReverse = [];
-  useEffect(async () => {
+  useEffect(() => {
     window.scrollTo(0, 0);
     let endpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20211108&endCreateDt=2021112`;
-    await Axios.get(endpointInfo).then(res => {
+    Axios.get(endpointInfo).then(res => {
       makeData(res.data.response.body.items.item);
       arrReverse = [...arr].reverse();
       setLoad(false);
+      labeling();
     });
+  }, []);
+
+  const labeling = () => {
     const labels = arrReverse.map(a => `${a.month}월 ${a.date}일`);
     setConfirmedData({
       labels,
@@ -34,7 +38,7 @@ function Chart2() {
         },
       ],
     });
-  }, []);
+  };
 
   const makeData = items => {
     items.map(item => {
