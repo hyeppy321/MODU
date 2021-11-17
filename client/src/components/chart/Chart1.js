@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import moment from 'moment';
-import { getCovid19InfStateJson_URL, yeongin_key } from '../Config';
 import Loading from '../map/Loading';
 import { Line } from 'react-chartjs-2';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -14,10 +13,8 @@ function Chart1() {
   let arr = [];
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${yeongin_key}&startCreateDt=20211108&endCreateDt=2021112`;
-    Axios.get(endpointInfo).then(res => {
-      console.log(res.data);
-      makeData(res.data.response.body.items.item);
+    Axios.get(`/api/info/Covid19`).then(res => {
+      makeData(res.data.data.body.response.body.items.item);
       arrReverse = [...arr].reverse();
       setLoad(false);
       labeling();

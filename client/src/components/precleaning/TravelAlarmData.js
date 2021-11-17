@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-import {
-  API_ENCODED_KEY,
-  getTravelAlarm_URL,
-  TravelSpecialWarningService_URL,
-  chanbi_key,
-} from '../Config';
 import { IconWidget } from '../Widget';
 import { MdReport } from 'react-icons/md';
 import { Col } from 'reactstrap';
@@ -18,14 +12,12 @@ export const SearchPage = props => {
   let NationInfo = {};
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo = `${getTravelAlarm_URL}?serviceKey=${API_ENCODED_KEY}&pageNo=1&numOfRows=200`;
-    Axios.get(endpointInfo).then(res => {
-      setAlarm(res.data.data.filter(item => item.alarm_lvl != null));
+    Axios.get(`/api/info/TravelAlarm`).then(res => {
+      setAlarm(res.data.data.body.data.filter(item => item.alarm_lvl != null));
     });
-    let endpointInfo2 = `${TravelSpecialWarningService_URL}?serviceKey=${API_ENCODED_KEY}&pageNo=1&numOfRows=200`;
-    Axios.get(endpointInfo2).then(res => {
+    Axios.get(`/api/info/SpecialWarning`).then(res => {
       setSpAlarm(
-        res.data.response.body.items.item.filter(
+        res.data.data.body.response.body.items.item.filter(
           item =>
             !item.splimit ||
             !item.splimitPartial ||

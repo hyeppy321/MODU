@@ -33,6 +33,7 @@ app.use(cookieParser());
 
 app.use("/api/users", require("./server/routes/users"));
 app.use("/api/favorite", require("./server/routes/favorites"));
+app.use("/api/info", require("./server/routes/informations"));
 // app.use("/api/informations", require("./server/routes/informations"));
 
 //use this to show the image you have in node js server to client (react js)
@@ -41,14 +42,14 @@ app.use("/uploads", express.static("uploads"));
 
 // Serve static assets if in production
 //if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  // All the javascript and css files will be read and served from this folder
-  app.use(express.static("client/build"));
+// Set static folder
+// All the javascript and css files will be read and served from this folder
+app.use(express.static("client/build"));
 
-  // index.html for all page routes    html or routing and naviagtion
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-  });
+// index.html for all page routes    html or routing and naviagtion
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+});
 //}
 
 const port = process.env.PORT || 5000;

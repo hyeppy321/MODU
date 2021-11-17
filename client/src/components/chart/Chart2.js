@@ -21,6 +21,12 @@ function Chart2() {
       setLoad(false);
       labeling();
     });
+    Axios.get(`/api/info/Covid19`).then(res => {
+      makeData(res.data.data.body.response.body.items.item);
+      arrReverse = [...arr].reverse();
+      setLoad(false);
+      labeling();
+    });
   }, []);
 
   const labeling = () => {

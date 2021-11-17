@@ -1,10 +1,5 @@
 import Axios from 'axios';
 import moment from 'moment';
-import {
-  getCovid19NatInfStateJson_URL,
-  chanbi_key,
-  friend_key,
-} from '../Config';
 import { features } from 'assets/geo-data/countries.json';
 import legendItems from '../../entities/LegendItems';
 class LoadCountriesTask {
@@ -29,15 +24,11 @@ class LoadCountriesTask {
 
   load = async setState => {
     this.setState = setState;
-    this.yesterdayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20211109&endCreateDt=20211109`;
-    this.todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${friend_key}&startCreateDt=20211110&endCreateDt=20211110`;
-    await Axios.get(this.yesterdayEndpointInfo).then(res => {
-      // console.log(res.data);
-      this.yesterdayDefcnt = res.data.response.body.items.item;
+    await Axios.get(`api/info/YesterdayCovid19Nat`).then(res => {
+      this.yesterdayDefcnt = res.data.data.body.response.body.items.item;
     });
-    await Axios.get(this.todayEndpointInfo).then(res => {
-      // console.log(res.data);
-      this.todayDefcnt = res.data.response.body.items.item;
+    await Axios.get(`api/info/TodayCovid19Nat`).then(res => {
+      this.todayDefcnt = res.data.data.body.response.body.items.item;
     });
 
     this.todayDefcnt.map((item, index) => {

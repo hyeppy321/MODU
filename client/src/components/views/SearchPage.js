@@ -6,13 +6,7 @@ import { features } from '../../assets/geo-data/countries.json';
 import { IconWidget } from '../../components/Widget';
 import WeatherWidget from '../Widget/WeatherWidget';
 import TravleAlarmData from '../precleaning/TravelAlarmData';
-import {
-  ArrivalsService_URL,
-  API_ENCODED_KEY,
-  getCovid19NatInfStateJson_URL,
-  Weather_URI,
-  Weather_KEY,
-} from '../Config';
+import { Weather_URI, Weather_KEY } from '../Config';
 import { MdCoronavirus, MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 import {
   WiSolarEclipse,
@@ -77,9 +71,10 @@ export const SearchPage = props => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211109&endCreateDt=20211109`;
-    Axios.get(endpointInfo1).then(res => {
-      setCoronaInfo(res.data.response.body.items.item);
+    Axios.get(`/api/info/Covid19Nat`).then(res => {
+      if (res.data.success) {
+        setCoronaInfo(res.data.data.body.response.body.items.item);
+      }
     });
     if (props.location.name !== undefined) {
       init();
@@ -149,11 +144,13 @@ export const SearchPage = props => {
       nationKrNm: CountryName,
       userFrom: localStorage.getItem('userId'),
     };
-    Axios.post('/api/favorite/favorited', data).then(res => {
-      if (res.data.success) {
-        setIsFavorited(res.data.favorited);
-      }
-    });
+    if (user.userData && user.userData.isAuth) {
+      Axios.post('/api/favorite/favorited', data).then(res => {
+        if (res.data.success) {
+          setIsFavorited(res.data.favorited);
+        }
+      });
+    }
     const filterNameToIso = name => {
       features
         .filter(item => item.properties.NAME.indexOf(name) != -1)
@@ -184,21 +181,22 @@ export const SearchPage = props => {
   };
 
   const getArrivalsServiceInfo = () => {
-    let endpointInfo =
-      `${ArrivalsService_URL}?serviceKey=${API_ENCODED_KEY}&returnType=${ReturnType}
-    &numOfRows=${NumOfRows}&pageNo=${PageNo}&cond[country_nm::EQ]=` +
-      encodeURI(`${CountryName}`) +
-      `&cond[country_iso_alp2::EQ]=${CountryIso}`;
-    Axios.get(endpointInfo).then((res, body) => {
-      if (res.data.resultMsg === '정상') {
-        if (res.data.data.length == 0) {
-          setIsInfo(false);
-        } else {
-          setIsInfo(true);
-          res.data.data.map(item => {
-            setTitle(item.title);
-            setContent(item.txt_origin_cn);
-          });
+    let tmp = {
+      CountryName,
+      CountryIso,
+    };
+    Axios.post(`/api/info/ArrivalsService`, tmp).then(res => {
+      if (res.data.success) {
+        if (res.data.data.body.resultMsg == '정상') {
+          if (res.data.data.body.data.length == 0) {
+            setIsInfo(false);
+          } else {
+            setIsInfo(true);
+            res.data.data.body.data.map(item => {
+              setTitle(item.title);
+              setContent(item.txt_origin_cn);
+            });
+          }
         }
       }
     });
