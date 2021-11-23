@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "http://allcoronainfo.co.kr/precache-manifest.27f7c19403a2dca9ad1ffbdedb175b33.js"
+  "https://reduction-admin.github.io/react-reduction/precache-manifest.08ded28913cb5e224e0db77a191b38ce.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("http://allcoronainfo.co.kr/index.html", {
+workbox.routing.registerNavigationRoute("https://reduction-admin.github.io/react-reduction/index.html", {
   
   blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
 });
