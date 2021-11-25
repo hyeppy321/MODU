@@ -28,6 +28,8 @@ import {
   Button,
   Form,
   Input,
+  InputGroup,
+  InputGroupAddon,
 } from 'reactstrap';
 
 export const SearchPage = props => {
@@ -209,11 +211,10 @@ export const SearchPage = props => {
       breadcrumbs={[{ name: 'Search', active: true }]}
     >
       <Row>
-        <Col lg={6} md={6} sm={6} xs={12}>
-          <Card className="mb-3">
-            <CardHeader>
-              국가를 선택해주세요.
+        <Col lg={12} md={12} sm={12} xs={12}>
               <Form inline className="cr-search-form" onSubmit={handleSubmit}>
+              <InputGroup size="lg">
+              <InputGroupAddon addonType="prepend">국가</InputGroupAddon>
                 <Input
                   type="select"
                   name="select"
@@ -224,13 +225,12 @@ export const SearchPage = props => {
                     return <option>{data.properties.NAME}</option>;
                   })}
                 </Input>
+                </InputGroup>
                 &nbsp;&nbsp;&nbsp;
-                <Button color="secondary" onClick={handleSubmit}>
+                <Button color="primary" onClick={handleSubmit} size="lg">
                   검색
                 </Button>
               </Form>
-            </CardHeader>
-          </Card>
         </Col>
         {user.userData && user.userData.isAuth && IsFavorited && (
           <Col>
@@ -303,6 +303,7 @@ export const SearchPage = props => {
           </Col>
         </Row>
       )}
+
     </Page>
   );
 };
