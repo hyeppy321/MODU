@@ -24,14 +24,10 @@ const WarningInfoPage = React.lazy(() =>
   import('./components/views/WarningInfoPage'),
 );
 
-const getBasename = () => {
-  return `/${process.env.PUBLIC_URL.split('/').pop()}`;
-};
-
 class App extends React.Component {
   render() {
     return (
-      <BrowserRouter basename={getBasename()}>
+      <BrowserRouter>
         <GAListener>
           <Switch>
             <LayoutRoute
