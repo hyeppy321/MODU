@@ -25,15 +25,26 @@ const getCovid19InfStateJson_URL =
 const endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211109&endCreateDt=20211109`;
 const endpointInfo3 = `${getTravelAlarm_URL}?serviceKey=${API_ENCODED_KEY}&pageNo=1&numOfRows=200`;
 const endpointInfo4 = `${TravelSpecialWarningService_URL}?serviceKey=${API_ENCODED_KEY}&pageNo=1&numOfRows=200`;
-const endpointInfo5 = `${getCovid19InfStateJson_URL}?serviceKey=${yeongin_key}&startCreateDt=20211108&endCreateDt=2021112`;
 
 const ReturnType = "JSON";
 const NumOfRows = 10;
 const PageNo = 1;
 
-router.get("/Covid19", (req, res) => {
+router.post("/Covid19Chart1", (req, res) => {
+  const chart1EndpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${yeongin_key}&numOfRows=7&startCreateDt=${req.body.createdt}&endCreateDt=${req.body.enddt}`;
   request(
-    { url: endpointInfo5, method: "GET", json: true },
+    { url: chart1EndpointInfo, method: "GET", json: true },
+    (err, response) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).json({ success: true, data: response });
+    }
+  );
+});
+
+router.post("/Covid19Chart2", (req, res) => {
+  const chart2EndpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${chanbi_key}&numOfRows=7&startCreateDt=${req.body.createdt}&endCreateDt=${req.body.enddt}`;
+  request(
+    { url: chart2EndpointInfo, method: "GET", json: true },
     (err, response) => {
       if (err) return res.status(400).send(err);
       return res.status(200).json({ success: true, data: response });
