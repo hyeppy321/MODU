@@ -2,15 +2,13 @@ import React from 'react';
 import PropTypes from 'utils/propTypes';
 
 import bn from 'utils/bemnames';
-
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-
 import Typography from './Typography';
 
 const bem = bn.create('page');
 
 const Page = ({
   title,
+  description,
   breadcrumbs,
   tag: Tag,
   className,
@@ -30,6 +28,9 @@ const Page = ({
           title
         )}
       </div>
+      <Typography type="h1" className={bem.e('description')}>
+           {description}
+      </Typography>
       {children}
     </Tag>
   );

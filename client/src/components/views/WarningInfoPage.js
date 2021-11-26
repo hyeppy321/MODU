@@ -49,7 +49,8 @@ function WarningInfoPage(props) {
   return (
     <Page
       className="WarningInfoPage"
-      title="WarningInfo"
+      title="여행 경보"
+      description="여행경보제도에 따른 단게별 경보정보를 제공합니다"
       breadcrumbs={[{ name: 'warningInfo', active: true }]}
     >
       <Row>

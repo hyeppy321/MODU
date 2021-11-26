@@ -207,12 +207,14 @@ export const SearchPage = props => {
   return (
     <Page
       className="SearchPage"
-      title="Search"
+      title="국가 여행 정보"
+      description="국가별 코로나상황과 현재날씨,특별여행경보단계,입국자 조치현황을 제공합니다."
       breadcrumbs={[{ name: 'Search', active: true }]}
     >
       <Row>
         <Col lg={12} md={12} sm={12} xs={12}>
               <Form inline className="cr-search-form" onSubmit={handleSubmit}>
+              <Col sm={7}>
               <InputGroup size="lg">
               <InputGroupAddon addonType="prepend">국가</InputGroupAddon>
                 <Input
@@ -226,6 +228,7 @@ export const SearchPage = props => {
                   })}
                 </Input>
                 </InputGroup>
+                </Col>
                 &nbsp;&nbsp;&nbsp;
                 <Button color="primary" onClick={handleSubmit} size="lg">
                   검색

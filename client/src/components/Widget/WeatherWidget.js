@@ -23,8 +23,7 @@ const WeatherWidget = ({
       </CardBody>
       <CardBody>
         <CardTitle>오늘 날씨</CardTitle>
-        <CardSubtitle>{info.temp}도</CardSubtitle>
-        <CardSubtitle>{info.description}</CardSubtitle>
+        <CardSubtitle>{info.temp}도 {info.description}</CardSubtitle>
       </CardBody>
     </Card>
   );

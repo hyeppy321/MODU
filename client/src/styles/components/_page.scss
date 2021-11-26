@@ -15,9 +15,22 @@
     @include media-breakpoint-down(sm) {
       margin-bottom: 0;
     }
+    font-size: 30px;
     padding-right: 0.5rem;
-    margin-bottom: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
   }
+
+  &__description {
+    @include media-breakpoint-down(sm) {
+      margin-bottom: 0;
+    }
+    color: rgba(51,48,0,.8);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2rem;
+  }
+
 
   &__breadcrumb {
     @include media-breakpoint-down(sm) {

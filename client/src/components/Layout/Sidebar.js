@@ -23,17 +23,17 @@ function Sidebar(props) {
   };
 
   const navItems = [
-    { to: '/', name: 'insight', exact: true, Icon: MdAirplanemodeActive },
-    { to: '/search', name: 'search', exact: true, Icon: MdSearch },
-    { to: '/warning-info', name: 'WarningInfo', exact: true, Icon: MdPanTool },
+    { to: '/', name: '코로나 상황판', exact: true, Icon: MdAirplanemodeActive },
+    { to: '/search', name: '국가 여행 정보', exact: true, Icon: MdSearch },
+    { to: '/warning-info', name: '여행 경보', exact: true, Icon: MdPanTool },
   ];
   const navItemsLogin = [
-    { to: '/favorite', name: 'favorite', exact: true, Icon: MdFavorite },
+    { to: '/favorite', name: '찜한 국가', exact: true, Icon: MdFavorite },
   ];
   const navItemsLogout = [
     {
       to: '/login',
-      name: 'login / signup',
+      name: '로그인/회원가입',
       exact: false,
       Icon: MdAccountCircle,
     },
@@ -53,7 +53,7 @@ function Sidebar(props) {
         <Navbar>
           <SourceLink className="navbar-brand d-flex">
             <img src={logo} width="40" height="30" className="pr-2" alt="" />
-            <span className="text-white">여행 다모아</span>
+            <span className="text-white">MODU</span>
           </SourceLink>
         </Navbar>
         <Nav vertical>
