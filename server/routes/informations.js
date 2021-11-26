@@ -26,8 +26,6 @@ const endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED
 const endpointInfo3 = `${getTravelAlarm_URL}?serviceKey=${API_ENCODED_KEY}&pageNo=1&numOfRows=200`;
 const endpointInfo4 = `${TravelSpecialWarningService_URL}?serviceKey=${API_ENCODED_KEY}&pageNo=1&numOfRows=200`;
 const endpointInfo5 = `${getCovid19InfStateJson_URL}?serviceKey=${yeongin_key}&startCreateDt=20211108&endCreateDt=2021112`;
-const yesterdayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20211109&endCreateDt=20211109`;
-const todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${friend_key}&startCreateDt=20211110&endCreateDt=20211110`;
 
 const ReturnType = "JSON";
 const NumOfRows = 10;
@@ -53,7 +51,8 @@ router.get("/Covid19Nat", (req, res) => {
   );
 });
 
-router.get("/YesterdayCovid19Nat", (req, res) => {
+router.get("/YesterdayCovid19Nat/:yesterday", (req, res) => {
+  const yesterdayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=${req.params.yesterday}&endCreateDt=${req.params.yesterday}`;
   request(
     { url: yesterdayEndpointInfo, method: "GET", json: true },
     (err, response) => {
@@ -63,7 +62,8 @@ router.get("/YesterdayCovid19Nat", (req, res) => {
   );
 });
 
-router.get("/TodayCovid19Nat", (req, res) => {
+router.get("/TodayCovid19Nat/:today", (req, res) => {
+  const todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${friend_key}&startCreateDt=${req.params.today}&endCreateDt=${req.params.today}`;
   request(
     { url: todayEndpointInfo, method: "GET", json: true },
     (err, response) => {

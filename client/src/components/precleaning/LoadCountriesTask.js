@@ -5,10 +5,36 @@ import legendItems from '../../entities/LegendItems';
 class LoadCountriesTask {
   today = moment().format('YYYYMMDD');
   yesterday = moment().subtract(1, 'days').format('YYYYMMDD');
+  nowddd = moment().format('ddd');
+  nowHH = moment().format('HH');
   setState = null;
   mapCountries = features;
   yesterdayDefcnt = [];
   todayDefcnt = [];
+
+  getDay = () => {
+    if (this.nowddd == 'Sun') {
+      this.today = moment(this.today).subtract(1, 'days').format('YYYYMMDD');
+      this.yesterday = moment(this.yesterday)
+        .subtract(1, 'days')
+        .format('YYYYMMDD');
+    } else if (this.nowddd == 'Mon') {
+      this.today = moment(this.today).subtract(2, 'days').format('YYYYMMDD');
+      this.yesterday = moment(this.yesterday)
+        .subtract(2, 'days')
+        .format('YYYYMMDD');
+    } else if (this.nowddd == 'Tue' && this.nowHH < 12) {
+      this.today = moment(this.today).subtract(3, 'days').format('YYYYMMDD');
+      this.yesterday = moment(this.yesterday)
+        .subtract(3, 'days')
+        .format('YYYYMMDD');
+    } else if (this.nowHH < 12) {
+      this.today = moment(this.today).subtract(1, 'days').format('YYYYMMDD');
+      this.yesterday = moment(this.yesterday)
+        .subtract(1, 'days')
+        .format('YYYYMMDD');
+    }
+  };
 
   filtercnt = nation => {
     this.cnt = 0;
@@ -24,10 +50,13 @@ class LoadCountriesTask {
 
   load = async setState => {
     this.setState = setState;
-    await Axios.get(`api/info/YesterdayCovid19Nat`).then(res => {
-      this.yesterdayDefcnt = res.data.data.body.response.body.items.item;
-    });
-    await Axios.get(`api/info/TodayCovid19Nat`).then(res => {
+    this.getDay();
+    await Axios.get(`api/info/YesterdayCovid19Nat/${this.yesterday}`).then(
+      res => {
+        this.yesterdayDefcnt = res.data.data.body.response.body.items.item;
+      },
+    );
+    await Axios.get(`api/info/TodayCovid19Nat/${this.today}`).then(res => {
       this.todayDefcnt = res.data.data.body.response.body.items.item;
     });
 
