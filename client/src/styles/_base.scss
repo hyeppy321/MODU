@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 // @import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i);
 
 /* Font Smoothing */
@@ -28,7 +28,7 @@ button,
 .alert {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: Poppins, Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';
   font-weight: $font-weight-normal;
 }
 
