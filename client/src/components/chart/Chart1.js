@@ -11,9 +11,11 @@ function Chart1() {
   const [ConfirmedData, setConfirmedData] = useState({});
   let arrReverse = [];
   let arr = [];
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    Axios.get(`/api/info/Covid19`).then(res => {
+    let dtData = makeWeek();
+    Axios.post(`/api/info/Covid19Chart1`, dtData).then(res => {
       makeData(res.data.data.body.response.body.items.item);
       arrReverse = [...arr].reverse();
       setLoad(false);
@@ -50,6 +52,27 @@ function Chart1() {
         },
       ];
     });
+  };
+
+  const makeWeek = () => {
+    let hour = moment().format('HH');
+    let createdt;
+    let enddt;
+
+    if(parseInt(hour)<10){
+      createdt = moment().subtract(7, 'days').format('YYYYMMDD');
+      enddt = moment().subtract(1, 'days').format('YYYYMMDD');
+    } else {
+      createdt = moment().subtract(6, 'days').format('YYYYMMDD');
+      enddt = moment().format('YYYYMMDD');
+    }
+
+    let dtdata = {
+      createdt: createdt,
+      enddt: enddt,
+    }
+
+    return dtdata;
   };
 
   return (

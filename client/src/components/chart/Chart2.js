@@ -14,14 +14,9 @@ function Chart2() {
   let arrReverse = [];
   useEffect(() => {
     window.scrollTo(0, 0);
-    let endpointInfo = `${getCovid19InfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=20211108&endCreateDt=2021112`;
-    Axios.get(endpointInfo).then(res => {
-      makeData(res.data.response.body.items.item);
-      arrReverse = [...arr].reverse();
-      setLoad(false);
-      labeling();
-    });
-    Axios.get(`/api/info/Covid19`).then(res => {
+    let dtData = makeWeek();
+    console.log(dtData);
+    Axios.post(`/api/info/Covid19Chart2`, dtData).then(res => {
       makeData(res.data.data.body.response.body.items.item);
       arrReverse = [...arr].reverse();
       setLoad(false);
@@ -58,6 +53,27 @@ function Chart2() {
         },
       ];
     });
+  };
+
+  const makeWeek = () => {
+    let hour = moment('2021-11-26 09:00:00','YYYY-MM-DD HH:mm:ss').format('HH');
+    let createdt;
+    let enddt;
+
+    if(parseInt(hour)<10){
+      createdt = moment().subtract(7, 'days').format('YYYYMMDD');
+      enddt = moment().subtract(1, 'days').format('YYYYMMDD');
+    } else {
+      createdt = moment().subtract(6, 'days').format('YYYYMMDD');
+      enddt = moment().format('YYYYMMDD');
+    }
+
+    let dtdata = {
+      createdt: createdt,
+      enddt: enddt,
+    }
+
+    return dtdata;
   };
 
   return (
