@@ -98,7 +98,7 @@ export const SearchPage = props => {
     let resT = await Axios.get(`api/info/TodayCovid19Nat/${today}`);
     let todayDefcnt = resT.data.data.body.response.body.items.item;
 
-    await getOnedayDefcnt(todayDefcnt, yesterdayDefcnt);
+    getOnedayDefcnt(todayDefcnt, yesterdayDefcnt);
     if (props.location.name !== undefined) {
       init();
     }
