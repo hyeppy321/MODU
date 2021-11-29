@@ -23,6 +23,9 @@ const TravleAlarmData = React.lazy(() =>
 const WarningInfoPage = React.lazy(() =>
   import('./components/views/WarningInfoPage'),
 );
+const CovidRateCnt = React.lazy(() =>
+  import('./components/chart/CovidRateCnt'),
+);
 const HomePage = React.lazy(() => import('./components/views/HomePage'));
 
 class App extends React.Component {
@@ -66,9 +69,10 @@ class App extends React.Component {
                   path="/warning-info"
                   component={Auth(WarningInfoPage, null)}
                 />
-                <Route exact path="/test" component={HomePage} />
+                <Route exact path="/test" component={CovidRateCnt} />
                 <Route exact path="/test1" component={GeoWithDefcnt} />
                 <Route exact path="/test2" component={TravleAlarmData} />
+                <Route exact path="/test3" component={HomePage} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />

@@ -21,6 +21,8 @@ const TravelSpecialWarningService_URL =
   "http://apis.data.go.kr/1262000/TravelSpecialWarningService/getTravelSpecialWarningList"; //특별여행경보
 const getCovid19InfStateJson_URL =
   "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson"; // 보건복지부 코로나19 감염현황
+const getCountryPopulation_URL =
+  "http://apis.data.go.kr/1262000/CountryPopulationService2/getCountryPopulationList2"; // 외교부_국가∙지역별 인구증감 정보
 
 const endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211109&endCreateDt=20211109`;
 const endpointInfo3 = `${getTravelAlarm_URL}?serviceKey=${API_ENCODED_KEY}&pageNo=1&numOfRows=200`;
@@ -74,6 +76,7 @@ router.get("/YesterdayCovid19Nat/:yesterday", (req, res) => {
 });
 
 router.get("/TodayCovid19Nat/:today", (req, res) => {
+  console.log(req.params);
   const todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${friend_key}&startCreateDt=${req.params.today}&endCreateDt=${req.params.today}`;
   request(
     { url: todayEndpointInfo, method: "GET", json: true },
@@ -117,5 +120,17 @@ router.get("/SpecialWarning", (req, res) => {
       return res.status(200).json({ success: true, data: response });
     }
   );
+});
+
+router.post("/getCountryPopulation", (req, res) => {
+  const endpointInfo =
+    `${getCountryPopulation_URL}?serviceKey=${API_ENCODED_KEY}&returnType=${ReturnType}
+  &numOfRows=${NumOfRows}&pageNo=${PageNo}&cond[country_nm::EQ]=` +
+    encodeURI(`${req.body.CountryName}`) +
+    `&cond[country_iso_alp2::EQ]=${req.body.CountryIso}`;
+  request({ url: endpointInfo, method: "GET", json: true }, (err, response) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json({ success: true, data: response });
+  });
 });
 module.exports = router;
