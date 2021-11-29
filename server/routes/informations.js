@@ -76,7 +76,6 @@ router.get("/YesterdayCovid19Nat/:yesterday", (req, res) => {
 });
 
 router.get("/TodayCovid19Nat/:today", (req, res) => {
-  console.log(req.params);
   const todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${friend_key}&startCreateDt=${req.params.today}&endCreateDt=${req.params.today}`;
   request(
     { url: todayEndpointInfo, method: "GET", json: true },

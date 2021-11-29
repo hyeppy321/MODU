@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Axios from 'axios';
+import moment from 'moment';
 import Page from 'components/Page';
 import { features } from '../../assets/geo-data/countries.json';
 import { IconWidget } from '../../components/Widget';
@@ -71,29 +72,74 @@ export const SearchPage = props => {
     '13d': WiSnow,
     '50d': WiFog,
   };
+
+  let nowddd = moment().format('ddd');
+  let nowHH = moment().format('HH');
+  let sysToday = moment().format('YYYYMMDD');
+  let sysYesterday = moment().subtract(1, 'days').format('YYYYMMDD');
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    Axios.get(`/api/info/Covid19Nat`).then(res => {
-      if (res.data.success) {
-        setCoronaInfo(res.data.data.body.response.body.items.item);
-      }
-    });
-    if (props.location.name !== undefined) {
-      init();
-    }
+    load();
   }, []);
 
   const init = () => {
     setCountryName(props.location.name);
   };
 
+  const load = async () => {
+    const result = getDay();
+    const today = result[0];
+    const yesterday = result[1];
+
+    let resY = await Axios.get(`api/info/YesterdayCovid19Nat/${yesterday}`);
+    let yesterdayDefcnt = resY.data.data.body.response.body.items.item;
+
+    let resT = await Axios.get(`api/info/TodayCovid19Nat/${today}`);
+    let todayDefcnt = resT.data.data.body.response.body.items.item;
+
+    await getOnedayDefcnt(todayDefcnt, yesterdayDefcnt);
+    if (props.location.name !== undefined) {
+      init();
+    }
+  };
+
+  const getDay = () => {
+    let t = '';
+    let y = '';
+    if (nowddd == 'Sun') {
+      t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
+      y = moment(sysYesterday).subtract(1, 'days').format('YYYYMMDD');
+    } else if (nowddd == 'Mon') {
+      t = moment(sysToday).subtract(2, 'days').format('YYYYMMDD');
+      y = moment(sysYesterday).subtract(2, 'days').format('YYYYMMDD');
+    } else if (nowddd == 'Tue' && nowHH < 12) {
+      t = moment(sysToday).subtract(3, 'days').format('YYYYMMDD');
+      y = moment(sysYesterday).subtract(3, 'days').format('YYYYMMDD');
+    } else if (nowHH < 12) {
+      t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
+      y = moment(sysYesterday).subtract(1, 'days').format('YYYYMMDD');
+    }
+    return [t, y];
+  };
+
+  const getOnedayDefcnt = (todayDefcnt, yesterdayDefcnt) => {
+    todayDefcnt.map((item, index) => {
+      todayDefcnt[index] = {
+        ...todayDefcnt[index],
+        todayNatDefCnt: item.natDefCnt - yesterdayDefcnt[index].natDefCnt,
+      };
+    });
+    setCoronaInfo(todayDefcnt);
+  };
+
   const filterCnt = name => {
     CoronaInfo.filter(item => item.nationNm.indexOf(name) != -1).map(data => {
       if (name === data.nationNm) {
         let tmp = {
-          natDefCnt: data.natDefCnt,
+          natDefCnt: data.todayNatDefCnt,
           natDeathRate: {
-            value: Math.round(data.natDeathRate * 100),
+            value: Math.round(data.natDeathRate),
             label: '사망률',
           },
           natDeathCnt: data.natDeathCnt,
@@ -213,10 +259,10 @@ export const SearchPage = props => {
     >
       <Row>
         <Col lg={12} md={12} sm={12} xs={12}>
-              <Form inline className="cr-search-form" onSubmit={handleSubmit}>
-              <Col sm={7}>
+          <Form inline className="cr-search-form" onSubmit={handleSubmit}>
+            <Col sm={7}>
               <InputGroup size="lg">
-              <InputGroupAddon addonType="prepend">국가</InputGroupAddon>
+                <InputGroupAddon addonType="prepend">국가</InputGroupAddon>
                 <Input
                   type="select"
                   name="select"
@@ -227,13 +273,13 @@ export const SearchPage = props => {
                     return <option>{data.properties.NAME}</option>;
                   })}
                 </Input>
-                </InputGroup>
-                </Col>
-                &nbsp;&nbsp;&nbsp;
-                <Button color="primary" onClick={handleSubmit} size="lg">
-                  검색
-                </Button>
-              </Form>
+              </InputGroup>
+            </Col>
+            &nbsp;&nbsp;&nbsp;
+            <Button color="primary" onClick={handleSubmit} size="lg">
+              검색
+            </Button>
+          </Form>
         </Col>
         {user.userData && user.userData.isAuth && IsFavorited && (
           <Col>
@@ -272,8 +318,8 @@ export const SearchPage = props => {
             <IconWidget
               bgColor={'secondary'}
               icon={MdCoronavirus}
-              title="코로나 사망자 수"
-              subtitle={DefCnt.natDeathCnt + '명'}
+              title="코로나 사망률"
+              subtitle={DefCnt.natDeathRate.value + '%'}
             />
           </Col>
           <Col lg={3} md={6} sm={6} xs={12} className="mb-3">
@@ -306,7 +352,6 @@ export const SearchPage = props => {
           </Col>
         </Row>
       )}
-
     </Page>
   );
 };

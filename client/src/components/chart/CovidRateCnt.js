@@ -10,7 +10,6 @@ import Page from 'components/Page';
 function CovidRateCnt() {
   let nowddd = moment().format('ddd');
   let nowHH = moment().format('HH');
-  console.log(nowHH);
   let sysToday = moment().format('YYYYMMDD');
   let sysYesterday = moment().subtract(1, 'days').format('YYYYMMDD');
 
@@ -24,6 +23,7 @@ function CovidRateCnt() {
     CountryIso,
   };
   useEffect(() => {
+    window.scrollTo(0, 0);
     load();
   }, []);
   const load = async () => {
