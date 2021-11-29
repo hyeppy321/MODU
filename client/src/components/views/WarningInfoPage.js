@@ -34,7 +34,7 @@ function WarningInfoPage(props) {
     '1단계 : 남색경보',
     '2단계 : 황색경보',
     '3단계 : 적색경보',
-    '4단계 : 흑생경보',
+    '4단계 : 흑색경보',
     '특별여행주의보(외교부 훈령[여행경보제도 운영지침])',
   ];
   const levelexplain = [
@@ -50,7 +50,7 @@ function WarningInfoPage(props) {
     <Page
       className="WarningInfoPage"
       title="여행 경보"
-      description="여행경보제도에 따른 단게별 경보정보를 제공합니다"
+      description="여행경보제도에 따른 단게별 경보정보를 제공합니다. 여행경보를 클릭하여 위험수준을 확인해보세요."
       breadcrumbs={[{ name: 'warningInfo', active: true }]}
     >
       <Row>
@@ -143,7 +143,7 @@ function WarningInfoPage(props) {
       <Row>
         <Col>
           <Card className="mb-3">
-            <CardHeader>{levelname[0]}</CardHeader>
+            <CardHeader tag="h5">{levelname[0]}</CardHeader>
             <CardBody>{levelexplain[0]}</CardBody>
           </Card>
         </Col>
@@ -152,7 +152,7 @@ function WarningInfoPage(props) {
         <Row>
           <Col>
             <Card className="mb-3">
-              <CardHeader>{levelname[IsClick]}</CardHeader>
+              <CardHeader tag="h5">{levelname[IsClick]}</CardHeader>
               <CardBody>{levelexplain[IsClick]}</CardBody>
             </Card>
           </Col>

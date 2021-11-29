@@ -9,7 +9,8 @@ const Footer = () => {
     <Navbar>
       <Nav navbar>
         <NavItem>
-          2018 Reduction theme, source on <SourceLink>Github</SourceLink>
+          @2021 Hyebin Lee, Chanbi Bae, Yeongin Jang source on 
+          <a href="https://github.com/hye-ppy/TravleingWithCorona"> Github</a>
         </NavItem>
       </Nav>
     </Navbar>
