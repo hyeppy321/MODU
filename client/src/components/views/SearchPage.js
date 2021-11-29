@@ -92,13 +92,19 @@ export const SearchPage = props => {
     const today = result[0];
     const yesterday = result[1];
 
-    let resY = await Axios.get(`api/info/YesterdayCovid19Nat/${yesterday}`);
-    let yesterdayDefcnt = resY.data.data.body.response.body.items.item;
+    // let resY = await Axios.get(`api/info/YesterdayCovid19Nat/${yesterday}`);
+    let yesterdayDefcnt = '';
+    await Axios.get(`api/info/YesterdayCovid19Nat/${yesterday}`).then(res => {
+      yesterdayDefcnt = res.data.data.body.response.body.items.item;
+    });
 
-    let resT = await Axios.get(`api/info/TodayCovid19Nat/${today}`);
-    let todayDefcnt = resT.data.data.body.response.body.items.item;
+    // let resT = await Axios.get(`api/info/TodayCovid19Nat/${today}`);
+    let todayDefcnt = '';
+    Axios.get(`api/info/TodayCovid19Nat/${today}`).then(res => {
+      todayDefcnt = res.data.data.body.response.body.items.item;
+      getOnedayDefcnt(todayDefcnt, yesterdayDefcnt);
+    });
 
-    getOnedayDefcnt(todayDefcnt, yesterdayDefcnt);
     if (props.location.name !== undefined) {
       init();
     }
@@ -128,12 +134,14 @@ export const SearchPage = props => {
       todayDefcnt[index] = {
         ...todayDefcnt[index],
         todayNatDefCnt: item.natDefCnt - yesterdayDefcnt[index].natDefCnt,
+        todayNatDeathCnt: item.natDeathCnt - yesterdayDefcnt[index].natDeathCnt,
       };
     });
     setCoronaInfo(todayDefcnt);
   };
 
   const filterCnt = name => {
+    console.log(111);
     CoronaInfo.filter(item => item.nationNm.indexOf(name) != -1).map(data => {
       if (name === data.nationNm) {
         let tmp = {
@@ -142,7 +150,7 @@ export const SearchPage = props => {
             value: Math.round(data.natDeathRate),
             label: '사망률',
           },
-          natDeathCnt: data.natDeathCnt,
+          natDeathCnt: data.todayNatDeathCnt,
           nm: data.nationNm,
         };
         setDefCnt(tmp);
@@ -281,23 +289,23 @@ export const SearchPage = props => {
             </Button>
             &nbsp;&nbsp;&nbsp;
             {user.userData && user.userData.isAuth && IsFavorited && (
-            <Button
-              outline
-              onClick={onChangeIsFavoritedHandler}
-              color="secondary"
-            >
-              <MdFavorite size={30} />
-            </Button>
-        )}
-        {user.userData && user.userData.isAuth && !IsFavorited && (
-            <Button
-              outline
-              onClick={onChangeIsFavoritedHandler}
-              color="secondary"
-            >
-              <MdFavoriteBorder size={30} />
-            </Button>
-        )}
+              <Button
+                outline
+                onClick={onChangeIsFavoritedHandler}
+                color="secondary"
+              >
+                <MdFavorite size={30} />
+              </Button>
+            )}
+            {user.userData && user.userData.isAuth && !IsFavorited && (
+              <Button
+                outline
+                onClick={onChangeIsFavoritedHandler}
+                color="secondary"
+              >
+                <MdFavoriteBorder size={30} />
+              </Button>
+            )}
           </Form>
         </Col>
       </Row>
@@ -315,8 +323,8 @@ export const SearchPage = props => {
             <IconWidget
               bgColor={'secondary'}
               icon={MdCoronavirus}
-              title="코로나 사망률"
-              subtitle={DefCnt.natDeathRate.value + '%'}
+              title="코로나 사망자 수"
+              subtitle={DefCnt.natDeathCnt + '명'}
             />
           </Col>
           <Col lg={3} md={6} sm={6} xs={12} className="mb-3">
