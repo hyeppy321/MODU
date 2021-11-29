@@ -58,13 +58,15 @@ function FavoritePage(props) {
     return (
       <Page
         title="Favorite"
+        description= "찜한 국가의 여행정보를 쉽게 확인할 수 있는 검색기능과 국가 간 비교기능을 제공합니다."
         breadcrumbs={[{ name: 'favorite', active: true }]}
         className="TablePage"
       >
         <Row>
           <Col>
             <Card className="mb-3">
-              <CardHeader>저장한 나라</CardHeader>
+              {/* <CardHeader>저장한 나라</CardHeader>
+               */}
               <CardBody>
                 <Table hover>
                   <thead>

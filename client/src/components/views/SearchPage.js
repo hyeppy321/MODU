@@ -279,10 +279,8 @@ export const SearchPage = props => {
             <Button color="primary" onClick={handleSubmit} size="lg">
               검색
             </Button>
-          </Form>
-        </Col>
-        {user.userData && user.userData.isAuth && IsFavorited && (
-          <Col>
+            &nbsp;&nbsp;&nbsp;
+            {user.userData && user.userData.isAuth && IsFavorited && (
             <Button
               outline
               onClick={onChangeIsFavoritedHandler}
@@ -290,10 +288,8 @@ export const SearchPage = props => {
             >
               <MdFavorite size={30} />
             </Button>
-          </Col>
         )}
         {user.userData && user.userData.isAuth && !IsFavorited && (
-          <Col>
             <Button
               outline
               onClick={onChangeIsFavoritedHandler}
@@ -301,8 +297,9 @@ export const SearchPage = props => {
             >
               <MdFavoriteBorder size={30} />
             </Button>
-          </Col>
         )}
+          </Form>
+        </Col>
       </Row>
       {IsInfo && Visible && (
         <Row>
