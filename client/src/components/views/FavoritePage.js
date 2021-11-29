@@ -2,7 +2,7 @@ import Page from 'components/Page';
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table, Form, Input, Button, FormGroup } from 'reactstrap';
 import Pagination from '../../utils/Pagination';
 import { paginate } from '../../utils/paginate';
 
@@ -11,6 +11,9 @@ function FavoritePage(props) {
   const [Favorites, setFavorites] = useState([]);
   const [Count, setCount] = useState(0);
   const [CP, setCP] = useState(1);
+  const [Comp, setComp] = useState(false);
+  const [checkedItems, setCheckedItems] = useState(new Set());
+  let cnt = 0;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,6 +44,50 @@ function FavoritePage(props) {
     setFavorites({ ...Favorites, currentPage: page });
   };
 
+  const handleSubmit = async event => {
+    event.preventDefault();
+    setComp(true);
+  };
+
+  const checkedItemHandler = (id, isChecked) => {
+    if (isChecked) {
+      checkedItems.add(id);
+      setCheckedItems(checkedItems);
+      cnt++;
+      console.log(id, "checked", cnt);
+    } else if (!isChecked && checkedItems.has(id)) {
+      checkedItems.delete(id);
+      setCheckedItems(checkedItems);
+      cnt--;
+      console.log(id, "unchecked", cnt);
+    }
+
+    if(isChecked && cnt>2){
+      checkedItems.delete(id);
+      setCheckedItems(checkedItems);
+      cnt--;
+      console.log(id, "over", cnt);
+    }
+  };
+
+  const checkHandler = ({ target }) => {
+    let id = target.value;
+    let isChecked = target.checked;
+    if (isChecked && cnt<2) {
+      checkedItems.add(id);
+      setCheckedItems(checkedItems);
+      cnt++;
+      console.log(id, "checked", cnt);
+    } else if (!isChecked && checkedItems.has(id)) {
+      checkedItems.delete(id);
+      setCheckedItems(checkedItems);
+      cnt--;
+      console.log(id, "unchecked", cnt);
+    } else{
+      target.checked=false;
+    }
+  };
+
   const { data, pageSize, currentPage } = Favorites;
   const pagedFavorites = paginate(data, currentPage, pageSize);
 
@@ -62,6 +109,11 @@ function FavoritePage(props) {
         breadcrumbs={[{ name: 'favorite', active: true }]}
         className="TablePage"
       >
+        <FormGroup>
+          <Button color="primary" onClick={handleSubmit} size="lg">
+                  비교하기
+          </Button>
+        </FormGroup>
         <Row>
           <Col>
             <Card className="mb-3">
@@ -76,6 +128,7 @@ function FavoritePage(props) {
                       <th>국가명(영문)</th>
                       <th>국가코드</th>
                       <th>검색버튼</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -100,6 +153,9 @@ function FavoritePage(props) {
                               search
                             </Link>
                           </td>
+                          <td>
+                          <input type="checkbox" value={data.nationKrNm} onChange={(e) => checkHandler(e)} />
+                          </td>
                         </tr>
                       );
                     })}
@@ -115,6 +171,9 @@ function FavoritePage(props) {
             </Card>
           </Col>
         </Row>
+        {Comp && (
+        'ㅇㅇㅇㅇㅇ'
+      )}
       </Page>
     );
   }
