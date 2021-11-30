@@ -11,13 +11,13 @@ function InsightPage(props) {
   }, []);
 
   return (
-      <Page
+    <Page
       className="InsightPage"
       title="코로나 상황판"
       description="국가 별 일일 확진자수를 지도에 시각화하여 제공합니다. 지도를 클릭하여 일일 확진자수를 확인해보세요."
       breadcrumbs={[{ name: 'Insight', active: true }]}
-      >
-      <Row>
+    >
+      {/* <Row>
         <Col>
           <Covid19 />
         </Col>
@@ -29,7 +29,7 @@ function InsightPage(props) {
         <Col xl={6} lg={12} md={12}>
           <Chart2 />
         </Col>
-      </Row>
+      </Row> */}
     </Page>
   );
 }

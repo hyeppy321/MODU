@@ -10,6 +10,8 @@ const friend_key =
   "SgEk8mUduv4ezkK8AO822hSARBK0YI3i4p0CCsVOU4k0dMJ7IS6qMCO8gYqIr%2BqD82RelttqPqESYRZKZbZFbQ%3D%3D";
 const yeongin_key =
   "qUnQJ2qjsQ38NOd3FvjN4BKHgEzg5tZwfb0%2BWThnkETsqkGcAgCKXg3rPwQoohdGMR4vSQ8CaHmxQNomvSVrbQ%3D%3D";
+const plus_key =
+  "%2BCOvtPwR9ieEcNt%2BtdzhZ%2FVt6sjHVhGbORgwVTl9SHGXqvL5vK%2Fp3RTzul2Z%2FH1BB2oH3DBuyBUK6vCyvXm36w%3D%3D";
 
 const getCovid19NatInfStateJson_URL =
   "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19NatInfStateJson";
@@ -65,7 +67,7 @@ router.get("/Covid19Nat", (req, res) => {
 });
 
 router.get("/YesterdayCovid19Nat/:yesterday", (req, res) => {
-  const yesterdayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${chanbi_key}&startCreateDt=${req.params.yesterday}&endCreateDt=${req.params.yesterday}`;
+  const yesterdayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=${req.params.yesterday}&endCreateDt=${req.params.yesterday}`;
   request(
     { url: yesterdayEndpointInfo, method: "GET", json: true },
     (err, response) => {
@@ -76,7 +78,7 @@ router.get("/YesterdayCovid19Nat/:yesterday", (req, res) => {
 });
 
 router.get("/TodayCovid19Nat/:today", (req, res) => {
-  const todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${friend_key}&startCreateDt=${req.params.today}&endCreateDt=${req.params.today}`;
+  const todayEndpointInfo = `${getCovid19NatInfStateJson_URL}?serviceKey=${plus_key}&startCreateDt=${req.params.today}&endCreateDt=${req.params.today}`;
   request(
     { url: todayEndpointInfo, method: "GET", json: true },
     (err, response) => {

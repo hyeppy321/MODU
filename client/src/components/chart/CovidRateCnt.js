@@ -2,19 +2,22 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import moment from 'moment';
 import Loading from '../map/Loading';
-import { Line } from 'react-chartjs-2';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { Row, Col, Card, CardBody, CardHeader } from 'reactstrap';
 import { getColor } from 'utils/colors';
 import Page from 'components/Page';
+import { Doughnut } from 'react-chartjs-2';
 
-function CovidRateCnt() {
+function CovidRateCnt(props) {
+  const [Load, setLoad] = useState(true);
+
   let nowddd = moment().format('ddd');
   let nowHH = moment().format('HH');
   let sysToday = moment().format('YYYYMMDD');
   let sysYesterday = moment().subtract(1, 'days').format('YYYYMMDD');
-
-  let CountryName = '미국';
-  let CountryIso = 'US';
+  // console.log(props.data);
+  let arr = props.data.split(' ');
+  let CountryName = arr[0];
+  let CountryIso = arr[1];
 
   const [percentByPeople, setpercentByPeople] = useState(0);
 
@@ -30,52 +33,43 @@ function CovidRateCnt() {
     let res = await Axios.post(`/api/info/getCountryPopulation`, tmp);
     let popltnCnt = res.data.data.body.data[0].popltn_cnt;
     const result = getDay();
-    const today = result[0];
-    const yesterday = result[1];
-
-    let resY = await Axios.get(`api/info/YesterdayCovid19Nat/${yesterday}`);
-    let yesterdayDefcnt = resY.data.data.body.response.body.items.item;
+    const today = result;
 
     let resT = await Axios.get(`api/info/TodayCovid19Nat/${today}`);
     let todayDefcnt = resT.data.data.body.response.body.items.item;
 
     todayDefcnt = filterNation(CountryName, todayDefcnt);
-    yesterdayDefcnt = filterNation(CountryName, yesterdayDefcnt);
+    setpercentByPeople(
+      genPieData(Math.round((todayDefcnt.natDefCnt / popltnCnt) * 10000) / 100),
+    );
+    setLoad(false);
+  };
 
-    getOnedayDefcnt(todayDefcnt, yesterdayDefcnt, popltnCnt);
+  const genPieData = p => {
+    return {
+      datasets: [
+        {
+          data: [p, 100 - p],
+          backgroundColor: [getColor('primary'), getColor('secondary')],
+          label: 'Dataset 1',
+        },
+      ],
+      labels: ['인구대비 누적 확진자 비율'],
+    };
   };
 
   const getDay = () => {
     let t = '';
-    let y = '';
     if (nowddd == 'Sun') {
       t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
-      y = moment(sysYesterday).subtract(1, 'days').format('YYYYMMDD');
     } else if (nowddd == 'Mon') {
       t = moment(sysToday).subtract(2, 'days').format('YYYYMMDD');
-      y = moment(sysYesterday).subtract(2, 'days').format('YYYYMMDD');
     } else if (nowddd == 'Tue' && nowHH < 12) {
       t = moment(sysToday).subtract(3, 'days').format('YYYYMMDD');
-      y = moment(sysYesterday).subtract(3, 'days').format('YYYYMMDD');
     } else if (nowHH < 12) {
       t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
-      y = moment(sysYesterday).subtract(1, 'days').format('YYYYMMDD');
     }
-    return [t, y];
-  };
-
-  const getOnedayDefcnt = (todayDefcnt, yesterdayDefcnt, popltnCnt) => {
-    todayDefcnt = {
-      ...todayDefcnt,
-      todayNatDefCnt: todayDefcnt.natDefCnt - yesterdayDefcnt.natDefCnt,
-    };
-    console.log(
-      todayDefcnt.todayNatDefCnt,
-      popltnCnt,
-      todayDefcnt.todayNatDefCnt / popltnCnt,
-    );
-    setpercentByPeople(todayDefcnt.todayNatDefCnt / popltnCnt);
-    console.log(percentByPeople);
+    return t;
   };
 
   const filterNation = (nation, arr) => {
@@ -91,13 +85,14 @@ function CovidRateCnt() {
   };
 
   return (
-    <Page
-      className="HomePage"
-      title="Home"
-      breadcrumbs={[{ name: '', active: true }]}
-    >
-      홈
-    </Page>
+    <Col xl={6} lg={12} md={12}>
+      <Card>
+        <CardHeader>{CountryName}</CardHeader>
+        <CardBody>
+          {Load === true ? <Loading /> : <Doughnut data={percentByPeople} />}
+        </CardBody>
+      </Card>
+    </Col>
   );
 }
 

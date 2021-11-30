@@ -2,9 +2,21 @@ import Page from 'components/Page';
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row, Table, Form, Input, Button, FormGroup } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Table,
+  Button,
+  FormGroup,
+} from 'reactstrap';
 import Pagination from '../../utils/Pagination';
 import { paginate } from '../../utils/paginate';
+
+import CovidRateCnt from '../chart/CovidRateCnt';
+import TravleAlarmData2 from '../precleaning/TravelAlarmData2';
 
 function FavoritePage(props) {
   const userId = localStorage.getItem('userId');
@@ -13,7 +25,9 @@ function FavoritePage(props) {
   const [CP, setCP] = useState(1);
   const [Comp, setComp] = useState(false);
   const [checkedItems, setCheckedItems] = useState(new Set());
-  let cnt = 0;
+  const [submitItem, setsubmitItem] = useState([]);
+  // let cnt = 0;
+  const [cnt, setcnt] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -46,6 +60,12 @@ function FavoritePage(props) {
 
   const handleSubmit = async event => {
     event.preventDefault();
+    let tmp = [];
+    for (let i of checkedItems) {
+      tmp = [...tmp, i];
+    }
+    await setsubmitItem(tmp);
+    setComp(false);
     setComp(true);
   };
 
@@ -53,38 +73,41 @@ function FavoritePage(props) {
     if (isChecked) {
       checkedItems.add(id);
       setCheckedItems(checkedItems);
-      cnt++;
-      console.log(id, "checked", cnt);
+      setcnt(cnt + 1);
+      console.log(id, 'checked', cnt);
     } else if (!isChecked && checkedItems.has(id)) {
       checkedItems.delete(id);
       setCheckedItems(checkedItems);
-      cnt--;
-      console.log(id, "unchecked", cnt);
+      setcnt(cnt - 1);
+      console.log(id, 'unchecked', cnt);
     }
 
-    if(isChecked && cnt>2){
+    if (isChecked && cnt > 2) {
       checkedItems.delete(id);
       setCheckedItems(checkedItems);
-      cnt--;
-      console.log(id, "over", cnt);
+      setcnt(cnt - 1);
+      console.log(id, 'over', cnt);
     }
   };
 
   const checkHandler = ({ target }) => {
+    for (let i of checkedItems) {
+      console.log(i);
+    }
     let id = target.value;
     let isChecked = target.checked;
-    if (isChecked && cnt<2) {
+    if (isChecked && cnt < 2) {
       checkedItems.add(id);
       setCheckedItems(checkedItems);
-      cnt++;
-      console.log(id, "checked", cnt);
+      setcnt(cnt + 1);
+      console.log(id, 'checked', cnt);
     } else if (!isChecked && checkedItems.has(id)) {
       checkedItems.delete(id);
       setCheckedItems(checkedItems);
-      cnt--;
-      console.log(id, "unchecked", cnt);
-    } else{
-      target.checked=false;
+      setcnt(cnt - 1);
+      console.log(id, 'unchecked', cnt);
+    } else {
+      target.checked = false;
     }
   };
 
@@ -105,13 +128,13 @@ function FavoritePage(props) {
     return (
       <Page
         title="Favorite"
-        description= "찜한 국가의 여행정보를 쉽게 확인할 수 있는 검색기능과 국가 간 비교기능을 제공합니다."
+        description="찜한 국가의 여행정보를 쉽게 확인할 수 있는 검색기능과 국가 간 비교기능을 제공합니다."
         breadcrumbs={[{ name: 'favorite', active: true }]}
         className="TablePage"
       >
         <FormGroup>
           <Button color="primary" onClick={handleSubmit} size="lg">
-                  비교하기
+            비교하기
           </Button>
         </FormGroup>
         <Row>
@@ -134,6 +157,10 @@ function FavoritePage(props) {
                   <tbody>
                     {/* 여기서 맵으로 뿌려  */}
                     {pagedFavorites.map((data, index) => {
+                      let tmp = {
+                        name: data.nationKrNm,
+                        iso: data.nationIso2,
+                      };
                       return (
                         <tr
                           key={index}
@@ -154,7 +181,11 @@ function FavoritePage(props) {
                             </Link>
                           </td>
                           <td>
-                          <input type="checkbox" value={data.nationKrNm} onChange={(e) => checkHandler(e)} />
+                            <input
+                              type="checkbox"
+                              value={data.nationKrNm + ' ' + data.nationIso2}
+                              onChange={e => checkHandler(e)}
+                            />
                           </td>
                         </tr>
                       );
@@ -171,9 +202,25 @@ function FavoritePage(props) {
             </Card>
           </Col>
         </Row>
+        {/* 출국자 수 비교 5일치 */}
+        {/* 도넛차트 - 확진자 비율 */}
         {Comp && (
-        'ㅇㅇㅇㅇㅇ'
-      )}
+          <Row>
+            {submitItem.map(item => {
+              return <CovidRateCnt data={item} />;
+            })}
+          </Row>
+        )}
+        {/* 여행 경보 단계 */}
+        {/* {Comp && (
+          <Row>
+            {submitItem.map(item => {
+              let tmp = item.split(' ');
+              return <TravleAlarmData2 nation={tmp[0]} />;
+            })}
+          </Row>
+        )} */}
+        {/* 날씨 위젯 */}
       </Page>
     );
   }
