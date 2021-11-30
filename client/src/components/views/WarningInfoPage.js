@@ -52,6 +52,7 @@ function WarningInfoPage(props) {
       title="여행 경보"
       description="여행경보제도에 따른 단게별 경보정보를 제공합니다. 여행경보를 클릭하여 위험수준을 확인해보세요."
       breadcrumbs={[{ name: 'warningInfo', active: true }]}
+      style={{whiteSpace: 'pre-wrap'}}
     >
       <Row>
         <Col lg={4} md={6} sm={6} xs={12} className="mb-3">
