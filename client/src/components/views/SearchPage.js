@@ -72,6 +72,7 @@ export const SearchPage = props => {
     '13d': WiSnow,
     '50d': WiFog,
   };
+  const [Alarm, setAlarm] = useState();
 
   let nowddd = moment().format('ddd');
   let nowHH = moment().format('HH');
@@ -85,6 +86,7 @@ export const SearchPage = props => {
 
   const init = () => {
     setCountryName(props.location.name);
+    setAlarm(props.location.name);
   };
 
   const load = async () => {
@@ -193,6 +195,7 @@ export const SearchPage = props => {
     getArrivalsServiceInfo();
     filterCnt(CountryName);
     getWeatherInfo();
+    setAlarm(CountryName);
   };
 
   useEffect(() => {
@@ -334,13 +337,13 @@ export const SearchPage = props => {
               info={WeatherInfo}
             />
           </Col>
-          <TravleAlarmData nation={CountryName} />
+          <TravleAlarmData nation={Alarm} />
         </Row>
       )}
       {IsInfo && Visible && (
         <Row>
           <Col>
-            <Card className="mb-3">
+            <Card className="mb-3" style={{whiteSpace: 'pre-wrap'}}>
               <CardHeader>각국의 해외입국자에 대한 조치 현황 </CardHeader>
               <CardBody>{Content}</CardBody>
             </Card>

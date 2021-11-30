@@ -4,11 +4,10 @@ import { IconWidget } from '../Widget';
 import { MdReport } from 'react-icons/md';
 import { Col } from 'reactstrap';
 
-export const SearchPage = props => {
+export const TravelAlarmData = props => {
   const [Alarm, setAlarm] = useState([]);
   const [SpAlarm, setSpAlarm] = useState([]);
   const [TravelAlarm, setTravelAlarm] = useState([]);
-  const [Nation, setNation] = useState(props.nation);
   let NationInfo = {};
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -97,7 +96,6 @@ export const SearchPage = props => {
   const filterNation = name => {
     TravelAlarm.filter(item => item.countryNm.indexOf(name) !== -1).map(
       data => {
-        // console.log(data.level);
         if (name === data.countryNm) {
           NationInfo = {
             level: data.level,
@@ -107,10 +105,8 @@ export const SearchPage = props => {
       },
     );
   };
-  // console.log(TravelAlarm);
   if (TravelAlarm.length === 237) {
-    filterNation(Nation);
-    // console.log(TravelAlarm);
+    filterNation(props.nation);
   }
 
   return (
@@ -125,4 +121,4 @@ export const SearchPage = props => {
   );
 };
 
-export default SearchPage;
+export default TravelAlarmData;
