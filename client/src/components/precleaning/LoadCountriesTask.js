@@ -28,6 +28,15 @@ class LoadCountriesTask {
       this.yesterday = moment(this.yesterday)
         .subtract(3, 'days')
         .format('YYYYMMDD');
+    } else if (this.nowddd == 'Tue' && this.nowHH >= 12) {
+      this.yesterday = moment(this.yesterday)
+        .subtract(2, 'days')
+        .format('YYYYMMDD');
+    } else if (this.nowddd == 'Wed' && this.nowHH < 12) {
+      this.today = moment(this.today).subtract(1, 'days').format('YYYYMMDD');
+      this.yesterday = moment(this.yesterday)
+        .subtract(3, 'days')
+        .format('YYYYMMDD');
     } else if (this.nowHH < 12) {
       this.today = moment(this.today).subtract(1, 'days').format('YYYYMMDD');
       this.yesterday = moment(this.yesterday)

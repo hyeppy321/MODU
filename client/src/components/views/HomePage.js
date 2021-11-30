@@ -2,8 +2,23 @@ import Page from 'components/Page';
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import moment from 'moment';
+import { nations } from '../../assets/geo-data/nations.json';
 
 export const HomePage = props => {
+  const [touristKr, settouristKr] = useState([]);
+  let tmp = {
+    YM: '202106',
+    natCd: '100',
+    edCd: 'D',
+  };
+  useEffect(() => {
+    Axios.post(`/api/info/TourismStats`, tmp).then(res => {
+      console.log(res);
+    });
+  }, []);
+  // let a = '한국';
+  // let t = nations;
+  // console.log(t);
   // let nowddd = moment().format('ddd');
   // let nowHH = moment().format('HH');
   // const [today, settoday] = useState(moment().format('YYYYMMDD'));

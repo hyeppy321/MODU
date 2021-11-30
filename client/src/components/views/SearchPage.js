@@ -124,6 +124,12 @@ export const SearchPage = props => {
     } else if (nowddd == 'Tue' && nowHH < 12) {
       t = moment(sysToday).subtract(3, 'days').format('YYYYMMDD');
       y = moment(sysYesterday).subtract(3, 'days').format('YYYYMMDD');
+    } else if (nowddd == 'Tue' && nowHH >= 12) {
+      t = sysToday;
+      y = moment(sysYesterday).subtract(2, 'days').format('YYYYMMDD');
+    } else if (nowddd == 'Wed' && nowHH < 12) {
+      t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
+      y = moment(sysYesterday).subtract(3, 'days').format('YYYYMMDD');
     } else if (nowHH < 12) {
       t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
       y = moment(sysYesterday).subtract(1, 'days').format('YYYYMMDD');
@@ -224,7 +230,11 @@ export const SearchPage = props => {
   }, [CountryName]);
 
   const getWeatherInfo = () => {
-    let endpointInfo2 = `${Weather_URI}?q=${CountryEnName}&appid=${Weather_KEY}`;
+    let enName = CountryEnName;
+    if (CountryEnName === 'Hong Kong S.A.R.') {
+      enName = 'HongKong';
+    }
+    let endpointInfo2 = `${Weather_URI}?q=${enName}&appid=${Weather_KEY}`;
     Axios.get(endpointInfo2).then(res => {
       let tmp = {
         temp: Math.round(res.data.main.temp - 273.15),
@@ -343,7 +353,7 @@ export const SearchPage = props => {
       {IsInfo && Visible && (
         <Row>
           <Col>
-            <Card className="mb-3" style={{whiteSpace: 'pre-wrap'}}>
+            <Card className="mb-3" style={{ whiteSpace: 'pre-wrap' }}>
               <CardHeader>각국의 해외입국자에 대한 조치 현황 </CardHeader>
               <CardBody>{Content}</CardBody>
             </Card>

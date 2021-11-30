@@ -66,6 +66,10 @@ function CovidRateCnt(props) {
       t = moment(sysToday).subtract(2, 'days').format('YYYYMMDD');
     } else if (nowddd == 'Tue' && nowHH < 12) {
       t = moment(sysToday).subtract(3, 'days').format('YYYYMMDD');
+    } else if (nowddd == 'Tue' && nowHH >= 12) {
+      t = sysToday;
+    } else if (nowddd == 'Wed' && nowHH < 12) {
+      t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
     } else if (nowHH < 12) {
       t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
     }

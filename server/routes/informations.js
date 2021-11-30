@@ -25,6 +25,8 @@ const getCovid19InfStateJson_URL =
   "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson"; // 보건복지부 코로나19 감염현황
 const getCountryPopulation_URL =
   "http://apis.data.go.kr/1262000/CountryPopulationService2/getCountryPopulationList2"; // 외교부_국가∙지역별 인구증감 정보
+const TourismStats_URL =
+  "http://openapi.tour.go.kr/openapi/service/EdrcntTourismStatsService/getEdrcntTourismStatsList"; // 한국문화관광연구원_출입국관광통계서비스
 
 const endpointInfo1 = `${getCovid19NatInfStateJson_URL}?serviceKey=${API_ENCODED_KEY}&startCreateDt=20211109&endCreateDt=20211109`;
 const endpointInfo3 = `${getTravelAlarm_URL}?serviceKey=${API_ENCODED_KEY}&pageNo=1&numOfRows=200`;
@@ -134,4 +136,13 @@ router.post("/getCountryPopulation", (req, res) => {
     return res.status(200).json({ success: true, data: response });
   });
 });
+
+router.post("/TourismStats", (req, res) => {
+  const endpointInfo = `${TourismStats_URL}?serviceKey=${API_ENCODED_KEY}&YM=${req.body.YM}&NAT_CD=${req.body.natCd}&ED_CD=${req.body.edCd}`;
+  request({ url: endpointInfo, method: "GET", json: true }, (err, response) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json({ success: true, data: response });
+  });
+});
+
 module.exports = router;
