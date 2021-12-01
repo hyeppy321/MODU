@@ -45,8 +45,8 @@ function InsightPage(props) {
   return (
     <Page
       className="InsightPage"
-      title="코로나 상황판"
-      description={"국가 별 일일 확진자수를 지도에 시각화하여 제공합니다. 지도를 클릭하여 일일 확진자수를 확인해보세요. (※ 한국시간 기준 "+year+"년 "+ month +"월 "+ day+"일에 업데이트 되었습니다.)"}
+      title="여행 종합 도표"
+      description={"국가별 여행정보를 시각화하여 제공합니다. 지도를 클릭하여 일일 확진자 수를 확인해 보세요. (※ 한국시간 기준 "+year+"년 "+ month +"월 "+ day+"일에 업데이트 되었습니다.)"}
       breadcrumbs={[{ name: 'Insight', active: true }]}
     >
       <Row>

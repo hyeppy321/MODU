@@ -31,6 +31,11 @@ function VisitorsMain() {
     '8월',
     '9월',
   ];
+
+  const colors=[
+    'primary','pink','success','danger','warning','info','navy','blackgray','special'
+  ]
+
   const leaveKr = [
     86143, 68213, 79446, 71302, 75416, 73999, 116615, 101963, 137712, 124399,
   ];
@@ -98,6 +103,8 @@ function VisitorsMain() {
         ...tmp,
         label: list[i].name,
         data: list[i].num,
+        backgroundColor: getColor(colors[i]),
+        borderColor: getColor(colors[i]),
       };
       data = [...data, tmp];
     }
@@ -159,7 +166,7 @@ function VisitorsMain() {
     <>
       <Col xl={6} lg={12} md={12}>
         <Card>
-          <CardHeader>2021년 월별 우리나라 출국자 수</CardHeader>
+          <CardHeader>2021년 월별 한국 출국자 수</CardHeader>
           <CardBody>
             {Load === true ? <Loading /> : <Bar data={genBarData(leaveKr)} />}
           </CardBody>
@@ -167,7 +174,7 @@ function VisitorsMain() {
       </Col>
       <Col xl={6} lg={12} md={12}>
         <Card>
-          <CardHeader>2021년 1~9월 10개국을 방문한 한국 관광객 수</CardHeader>
+          <CardHeader>2021년 1월~9월 목적지 별 한국 출국자 수</CardHeader>
           <CardBody>
             {Load === true ? <Loading /> : <Line data={genLineData(leaveKr)} />}
           </CardBody>

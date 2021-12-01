@@ -38,9 +38,7 @@
 
   &::after {
     z-index: 3;
-    // sublime light
-    background: #fc5c7d; /* fallback for old browsers */
-    background: linear-gradient(to bottom, #6a82fb, #fc5c7d);
+    background:#393E46;
     opacity: 1;
   }
 
@@ -123,44 +121,3 @@
     }
   }
 }
-
-// @include gradient-y(#02aab0, #00cdac); // green beach
-// @include gradient-y(#348f50, #56b4d3); // emerald water
-// @include gradient-y(#4CB8C4, #3CD3AD); // sea weed
-
-// stripe
-// background: #1fa2ff; /* fallback for old browsers */
-// background: linear-gradient(
-//   to bottom,
-//   #1fa2ff,
-//   #12d8fa,
-//   #a6ffcb
-// );
-
-// subu
-// background: #0cebeb; /* fallback for old browsers */
-// background: -webkit-linear-gradient(
-//   to bottom,
-//   #29ffc6,
-//   #20e3b2,
-//   #0cebeb
-// ); /* Chrome 10-25, Safari 5.1-6 */
-// background: linear-gradient(
-//   to bottom,
-//   #29ffc6,
-//   #20e3b2,
-//   #0cebeb
-// ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-// mojito
-// background: #1d976c; /* fallback for old browsers */
-// background: -webkit-linear-gradient(
-//   to bottom,
-//   #93f9b9,
-//   #1d976c
-// ); /* Chrome 10-25, Safari 5.1-6 */
-// background: linear-gradient(
-//   to bottom,
-//   #93f9b9,
-//   #1d976c
-// ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */

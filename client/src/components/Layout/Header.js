@@ -33,7 +33,6 @@ function Header(props) {
         console.log('로그아웃성공!');
         window.localStorage.setItem('userId', '');
         window.localStorage.setItem('login', false);
-        // props.history.push('/');
         document.location.href = '/';
       } else {
         alert('로그아웃을 실패했습니다.');
@@ -61,9 +60,6 @@ function Header(props) {
           <MdClearAll size={25} />
         </Button>
       </Nav>
-      {/* <Nav navbar>
-          <SearchInput />
-        </Nav> */}
 
       <Nav navbar className={bem.e('nav-right')}>
         {user.userData && user.userData.isAuth && (
@@ -83,7 +79,6 @@ function Header(props) {
                 <UserCard
                   title="USER"
                   subtitle={user.userData.email}
-                  // text="Last updated 3 mins ago"
                   className="border-light"
                 >
                   <ListGroup flush>

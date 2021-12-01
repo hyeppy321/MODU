@@ -89,8 +89,8 @@ function VisitorsBar(props) {
         },
         {
           label: `방한${nationNm}관광객`,
-          backgroundColor: getColor('secondary'),
-          borderColor: getColor('secondary'),
+          backgroundColor: getColor('pink'),
+          borderColor: getColor('pink'),
           borderWidth: 1,
           data: data,
         },
@@ -103,7 +103,7 @@ function VisitorsBar(props) {
       datasets: [
         {
           data: [p, 100 - p],
-          backgroundColor: [getColor('primary'), getColor('secondary')],
+          backgroundColor: [getColor('primary'), getColor('lightgray')],
           label: 'Dataset 1',
         },
       ],

@@ -108,16 +108,14 @@ export const TravelAlarmData2 = props => {
       },
     );
   };
-  // console.log(TravelAlarm);
   if (TravelAlarm.length === 237) {
     filterNation(Nation);
-    // console.log(TravelAlarm);
   }
 
   return (
     <Col xl={6} lg={12} md={12} className="mb-3">
       <IconWidget
-        bgColor={'secondary'}
+        bgColor={'pink'}
         icon={MdReport}
         title="특별여행 경보단계"
         subtitle={NationInfo.level}

@@ -23,7 +23,7 @@ function Sidebar(props) {
   };
 
   const navItems = [
-    { to: '/', name: '코로나 상황판', exact: true, Icon: MdAirplanemodeActive },
+    { to: '/', name: '여행 종합 도표', exact: true, Icon: MdAirplanemodeActive },
     { to: '/search', name: '국가 여행 정보', exact: true, Icon: MdSearch },
     { to: '/warning-info', name: '여행 경보', exact: true, Icon: MdPanTool },
   ];
@@ -47,7 +47,7 @@ function Sidebar(props) {
   });
 
   return (
-    <aside className={bem.b()} data-image={sidebarBgImage}>
+    <aside className={bem.b()}>
       <div className={bem.e('background')} style={sidebarBackground} />
       <div className={bem.e('content')}>
         <Navbar>

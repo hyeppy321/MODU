@@ -89,10 +89,6 @@ function FavoritePage(props) {
     });
   };
 
-  const onClickHandler = nation => event => {
-    console.log(nation);
-  };
-
   const handlePageChange = page => {
     setCP(page);
     setFavorites({ ...Favorites, currentPage: page });
@@ -107,6 +103,8 @@ function FavoritePage(props) {
       tmp = [...tmp, words[0]];
       tmp2 = [...tmp2, words[1]];
     }
+    await setContent([]);
+    await setWeatherInfo([]);
     await setsubmitItem(tmp);
     await setsubmitItemW(tmp2);
     setComp(false);
@@ -114,21 +112,16 @@ function FavoritePage(props) {
   };
 
   const checkHandler = ({ target }) => {
-    // for (let i of checkedItems) {
-    //   console.log(i);
-    // }
     let id = target.value;
     let isChecked = target.checked;
     if (isChecked && cnt < 2) {
       checkedItems.add(id);
       setCheckedItems(checkedItems);
       setcnt(cnt + 1);
-      //console.log(id, 'checked', cnt);
     } else if (!isChecked && checkedItems.has(id)) {
       checkedItems.delete(id);
       setCheckedItems(checkedItems);
       setcnt(cnt - 1);
-      //console.log(id, 'unchecked', cnt);
     } else {
       target.checked = false;
     }
@@ -136,7 +129,6 @@ function FavoritePage(props) {
 
   const getWeatherInfo = (item) => {
     let enName = item;
-    //console.log(item);
     if (item=== 'Hong Kong S.A.R.') {
       enName = 'HongKong';
     }
@@ -151,7 +143,6 @@ function FavoritePage(props) {
         wind: res.data.wind.speed,
         cloud: res.data.clouds.all + '%',
       };
-      //console.log(tmp);
       setWeatherInfo((prevState) => [...prevState, tmp]);
     });
   };
@@ -159,7 +150,6 @@ function FavoritePage(props) {
   useEffect(() => {
     submitItemW.map(item => {
       getWeatherInfo(item);
-      //console.log(item);
     })
   },[submitItemW]);
 
@@ -203,15 +193,13 @@ function FavoritePage(props) {
     return (
       <Page
         title="Favorite"
-        description="찜한 국가의 여행정보를 쉽게 확인할 수 있는 검색기능과 국가 간 비교기능을 제공합니다."
+        description="찜한 국가의 여행정보를 쉽게 확인할 수 있는 검색 기능과 국가 간 비교 기능을 제공합니다."
         breadcrumbs={[{ name: 'favorite', active: true }]}
         className="TablePage"
       >
         <Row>
           <Col>
             <Card className="mb-3">
-              {/* <CardHeader>저장한 나라</CardHeader>
-               */}
               <CardBody>
                 <Table hover>
                   <thead>
@@ -225,7 +213,6 @@ function FavoritePage(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* 여기서 맵으로 뿌려  */}
                     {pagedFavorites.map((data, index) => {
                       let tmp = {
                         name: data.nationKrNm,
@@ -234,7 +221,6 @@ function FavoritePage(props) {
                       return (
                         <tr
                           key={index}
-                          // onClick={onClickHandler(data.nationKrNm)}
                         >
                           <th scope="row">{index + 1}</th>
                           <td>{data.nationKrNm}</td>
@@ -273,7 +259,7 @@ function FavoritePage(props) {
                 <Row>
                   <Col md={{ span: 6, offset: 3 }}>
                       <small className="text-muted">
-                        비교하고 싶은 두 국가를 선택하여, 출입국 현황과 확진자 비율을 차트로 확인해보세요.&nbsp;&nbsp;
+                      비교하고 싶은 두 국가를 선택하여, 출입국 현황과 확진자 비율을 차트로 확인해 보세요.&nbsp;&nbsp;
                       </small>
                       <Button color="primary" onClick={handleSubmit}>
                         비교하기
@@ -285,7 +271,6 @@ function FavoritePage(props) {
             </Card>
           </Col>
         </Row>
-        {/* 출국자 수 비교 5일치 */}
         {/* 도넛차트 - 확진자 비율 */}
         {Comp && (
           <Row>
@@ -310,7 +295,7 @@ function FavoritePage(props) {
               return(
               <Col xl={6} lg={12} md={12} className="mb-3">
               <WeatherWidget
-                bgColor={'secondary'}
+                bgColor={'pink'}
                 icon={item.icon}
                 info={item}
               />
@@ -324,7 +309,7 @@ function FavoritePage(props) {
               return(
                 <Col>
                 <Card className="mb-3" style={{ whiteSpace: 'pre-wrap' }}>
-                  <CardHeader>각국의 해외입국자에 대한 조치 현황 </CardHeader>
+                  <CardHeader tag="h5">각국의 해외 입국자에 대한 조치 현황 </CardHeader>
                   <CardBody>{item}</CardBody>
                 </Card>
               </Col>

@@ -112,7 +112,7 @@ export const TravelAlarmData = props => {
   return (
     <Col lg={3} md={6} sm={6} xs={12} className="mb-3">
       <IconWidget
-        bgColor={'secondary'}
+        bgColor={'pink'}
         icon={MdReport}
         title="특별여행 경보단계"
         subtitle={NationInfo.level}

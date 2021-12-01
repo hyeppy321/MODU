@@ -14,7 +14,6 @@ function CovidRateCnt(props) {
   let nowHH = moment().format('HH');
   let sysToday = moment().format('YYYYMMDD');
   let sysYesterday = moment().subtract(1, 'days').format('YYYYMMDD');
-  // console.log(props.data);
   let arr = props.data.split(' ');
   let CountryName = arr[0];
   let CountryIso = arr[1];

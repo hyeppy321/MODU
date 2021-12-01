@@ -294,7 +294,7 @@ export const SearchPage = props => {
     <Page
       className="SearchPage"
       title="국가 여행 정보"
-      description="국가별 코로나상황과 현재날씨,특별여행경보단계,입국자 조치현황을 제공합니다."
+      description="국가별 코로나 상황과 현재 날씨, 특별여행경보단계, 입국자 조치 현황을 제공합니다."
       breadcrumbs={[{ name: 'Search', active: true }]}
     >
       <Row>
@@ -324,7 +324,7 @@ export const SearchPage = props => {
               <Button
                 outline
                 onClick={onChangeIsFavoritedHandler}
-                color="secondary"
+                color="pink"
               >
                 <MdFavorite size={30} />
               </Button>
@@ -333,7 +333,7 @@ export const SearchPage = props => {
               <Button
                 outline
                 onClick={onChangeIsFavoritedHandler}
-                color="secondary"
+                color="pink"
               >
                 <MdFavoriteBorder size={30} />
               </Button>
@@ -345,7 +345,7 @@ export const SearchPage = props => {
         <Row>
           <Col lg={3} md={6} sm={6} xs={12} className="mb-3">
             <IconWidget
-              bgColor={'secondary'}
+              bgColor={'pink'}
               icon={MdCoronavirus}
               title="코로나 확진자 수"
               subtitle={DefCnt.natDefCnt + '명'}
@@ -353,7 +353,7 @@ export const SearchPage = props => {
           </Col>
           <Col lg={3} md={6} sm={6} xs={12} className="mb-3">
             <IconWidget
-              bgColor={'secondary'}
+              bgColor={'pink'}
               icon={MdCoronavirus}
               title="코로나 사망자 수"
               subtitle={DefCnt.natDeathCnt + '명'}
@@ -361,7 +361,7 @@ export const SearchPage = props => {
           </Col>
           <Col lg={3} md={6} sm={6} xs={12} className="mb-3">
             <WeatherWidget
-              bgColor={'secondary'}
+              bgColor={'pink'}
               icon={WeatherInfo.icon}
               info={WeatherInfo}
             />
@@ -378,7 +378,7 @@ export const SearchPage = props => {
         <Row>
           <Col>
             <Card className="mb-3" style={{ whiteSpace: 'pre-wrap' }}>
-              <CardHeader>각국의 해외입국자에 대한 조치 현황 </CardHeader>
+              <CardHeader tag="h5">각국의 해외입국자에 대한 조치 현황 </CardHeader>
               <CardBody>{Content}</CardBody>
             </Card>
           </Col>
@@ -388,7 +388,7 @@ export const SearchPage = props => {
         <Row>
           <Col>
             <Card className="mb-3">
-              <CardHeader>각국의 해외입국자에 대한 조치 현황</CardHeader>
+              <CardHeader tag="h5">각국의 해외입국자에 대한 조치 현황</CardHeader>
               <CardBody>정보가 없습니다.</CardBody>
             </Card>
           </Col>

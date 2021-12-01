@@ -31,8 +31,8 @@ function Chart2() {
       datasets: [
         {
           label: '국내 누적 확진자',
-          backgroundColor: getColor('secondary'),
-          borderColor: getColor('secondary'),
+          backgroundColor: getColor('primary'),
+          borderColor: getColor('primary'),
           borderWidth: 2,
           fill: false,
           data: arrReverse.map(a => a.decideCnt),
