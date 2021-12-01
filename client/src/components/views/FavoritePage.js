@@ -11,6 +11,7 @@ import {
   Table,
   Button,
   FormGroup,
+  CardHeader,
 } from 'reactstrap';
 import Pagination from '../../utils/Pagination';
 import { paginate } from '../../utils/paginate';
@@ -43,6 +44,7 @@ function FavoritePage(props) {
   const [checkedItemsE, setCheckedItemsE] = useState(new Set());
   const [submitItemW, setsubmitItemW] = useState([]);
   const [WeatherInfo, setWeatherInfo] = useState([]);
+  const [Content, setContent] = useState([]);
 
   const [cnt, setcnt] = useState(0);
   const WeatherIcon = {
@@ -160,6 +162,29 @@ function FavoritePage(props) {
       //console.log(item);
     })
   },[submitItemW]);
+
+  useEffect(() => {
+    let tmp = [];
+    for (let i of submitItem) {
+      let words = i.split(' ');
+      tmp = [...tmp, {CountryName:words[0],CountryIso:words[1]}];
+    }
+    tmp.map((item)=>{
+      Axios.post(`/api/info/ArrivalsService`, item).then(res => {
+        if (res.data.success) {
+          if (res.data.data.body.resultMsg == '정상') {
+            if (res.data.data.body.data.length == 0) {
+              setContent((prevState)=>[...prevState, '정보가 없습니다.']);
+            } else {
+              res.data.data.body.data.map(item => {
+                setContent((prevState)=>[...prevState, item.txt_origin_cn]);
+              });
+            }
+          }
+        }
+      });
+    })
+  },[submitItem]);
 
   const { data, pageSize, currentPage } = Favorites;
   const pagedFavorites = paginate(data, currentPage, pageSize);
@@ -292,6 +317,20 @@ function FavoritePage(props) {
             </Col>);
             })}
           </Row>
+        )}
+        {Comp && (
+          <Row>
+            {Content.map(item=>{
+              return(
+                <Col>
+                <Card className="mb-3" style={{ whiteSpace: 'pre-wrap' }}>
+                  <CardHeader>각국의 해외입국자에 대한 조치 현황 </CardHeader>
+                  <CardBody>{item}</CardBody>
+                </Card>
+              </Col>
+              );
+            })}
+        </Row>
         )}
       </Page>
     );
