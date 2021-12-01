@@ -18,6 +18,20 @@ import { paginate } from '../../utils/paginate';
 import CovidRateCnt from '../chart/CovidRateCnt';
 import TravleAlarmData2 from '../precleaning/TravelAlarmData2';
 
+import { Weather_URI, Weather_KEY } from '../Config';
+import WeatherWidget from '../Widget/WeatherWidget';
+import {
+  WiSolarEclipse,
+  WiDayCloudy,
+  WiCloud,
+  WiCloudy,
+  WiShowers,
+  WiRain,
+  WiDayLightning,
+  WiSnow,
+  WiFog,
+} from 'weather-icons-react'; 
+
 function FavoritePage(props) {
   const userId = localStorage.getItem('userId');
   const [Favorites, setFavorites] = useState([]);
@@ -26,8 +40,32 @@ function FavoritePage(props) {
   const [Comp, setComp] = useState(false);
   const [checkedItems, setCheckedItems] = useState(new Set());
   const [submitItem, setsubmitItem] = useState([]);
-  // let cnt = 0;
+  const [checkedItemsE, setCheckedItemsE] = useState(new Set());
+  const [submitItemW, setsubmitItemW] = useState([]);
+  const [WeatherInfo, setWeatherInfo] = useState([]);
+
   const [cnt, setcnt] = useState(0);
+  const WeatherIcon = {
+    '01n': WiSolarEclipse,
+    '02n': WiDayCloudy,
+    '03n': WiCloud,
+    '04n': WiCloudy,
+    '09n': WiShowers,
+    '10n': WiRain,
+    '11n': WiDayLightning,
+    '13n': WiSnow,
+    '50n': WiFog,
+    '01d': WiSolarEclipse,
+    '02d': WiDayCloudy,
+    '03d': WiCloud,
+    '04d': WiCloudy,
+    '09d': WiShowers,
+    '10d': WiRain,
+    '11d': WiDayLightning,
+    '13d': WiSnow,
+    '50d': WiFog,
+  };
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -61,55 +99,67 @@ function FavoritePage(props) {
   const handleSubmit = async event => {
     event.preventDefault();
     let tmp = [];
+    let tmp2 =[];
     for (let i of checkedItems) {
-      tmp = [...tmp, i];
+      let words = i.split(',');
+      tmp = [...tmp, words[0]];
+      tmp2 = [...tmp2, words[1]];
     }
     await setsubmitItem(tmp);
+    await setsubmitItemW(tmp2);
     setComp(false);
     setComp(true);
   };
 
-  const checkedItemHandler = (id, isChecked) => {
-    if (isChecked) {
-      checkedItems.add(id);
-      setCheckedItems(checkedItems);
-      setcnt(cnt + 1);
-      console.log(id, 'checked', cnt);
-    } else if (!isChecked && checkedItems.has(id)) {
-      checkedItems.delete(id);
-      setCheckedItems(checkedItems);
-      setcnt(cnt - 1);
-      console.log(id, 'unchecked', cnt);
-    }
-
-    if (isChecked && cnt > 2) {
-      checkedItems.delete(id);
-      setCheckedItems(checkedItems);
-      setcnt(cnt - 1);
-      console.log(id, 'over', cnt);
-    }
-  };
-
   const checkHandler = ({ target }) => {
-    for (let i of checkedItems) {
-      console.log(i);
-    }
+    // for (let i of checkedItems) {
+    //   console.log(i);
+    // }
     let id = target.value;
     let isChecked = target.checked;
     if (isChecked && cnt < 2) {
       checkedItems.add(id);
       setCheckedItems(checkedItems);
       setcnt(cnt + 1);
-      console.log(id, 'checked', cnt);
+      //console.log(id, 'checked', cnt);
     } else if (!isChecked && checkedItems.has(id)) {
       checkedItems.delete(id);
       setCheckedItems(checkedItems);
       setcnt(cnt - 1);
-      console.log(id, 'unchecked', cnt);
+      //console.log(id, 'unchecked', cnt);
     } else {
       target.checked = false;
     }
   };
+
+  const getWeatherInfo = (item) => {
+    let enName = item;
+    //console.log(item);
+    if (item=== 'Hong Kong S.A.R.') {
+      enName = 'HongKong';
+    }
+    let endpointInfo2 = `${Weather_URI}?q=${enName}&appid=${Weather_KEY}`;
+    Axios.get(endpointInfo2).then(res => {
+      let tmp = {
+        temp: Math.round(res.data.main.temp - 273.15),
+        humidity: res.data.main.humidity,
+        weather: res.data.weather[0].main,
+        description: res.data.weather[0].description,
+        icon: WeatherIcon[res.data.weather[0].icon],
+        wind: res.data.wind.speed,
+        cloud: res.data.clouds.all + '%',
+      };
+      //console.log(tmp);
+      setWeatherInfo((prevState) => [...prevState, tmp]);
+    });
+  };
+
+  useEffect(() => {
+    submitItemW.map(item => {
+      getWeatherInfo(item);
+      //console.log(item);
+    })
+  },[submitItemW]);
 
   const { data, pageSize, currentPage } = Favorites;
   const pagedFavorites = paginate(data, currentPage, pageSize);
@@ -183,7 +233,7 @@ function FavoritePage(props) {
                           <td>
                             <input
                               type="checkbox"
-                              value={data.nationKrNm + ' ' + data.nationIso2}
+                              value={data.nationKrNm + ' ' + data.nationIso2 + ',' + data.nationEnNm}
                               onChange={e => checkHandler(e)}
                             />
                           </td>
@@ -212,15 +262,29 @@ function FavoritePage(props) {
           </Row>
         )}
         {/* 여행 경보 단계 */}
-        {/* {Comp && (
+        {Comp && (
           <Row>
             {submitItem.map(item => {
               let tmp = item.split(' ');
               return <TravleAlarmData2 nation={tmp[0]} />;
             })}
           </Row>
-        )} */}
+        )}
         {/* 날씨 위젯 */}
+        {Comp && (
+          <Row>
+            {WeatherInfo.map(item => {
+              return(
+              <Col xl={6} lg={12} md={12} className="mb-3">
+              <WeatherWidget
+                bgColor={'secondary'}
+                icon={item.icon}
+                info={item}
+              />
+            </Col>);
+            })}
+          </Row>
+        )}
       </Page>
     );
   }
