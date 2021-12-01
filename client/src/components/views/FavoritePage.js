@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import {
   Card,
   CardBody,
-  CardHeader,
+  CardFooter,
   Col,
   Row,
   Table,
@@ -182,11 +182,6 @@ function FavoritePage(props) {
         breadcrumbs={[{ name: 'favorite', active: true }]}
         className="TablePage"
       >
-        <FormGroup>
-          <Button color="primary" onClick={handleSubmit} size="lg">
-            비교하기
-          </Button>
-        </FormGroup>
         <Row>
           <Col>
             <Card className="mb-3">
@@ -249,6 +244,19 @@ function FavoritePage(props) {
                   onPageChange={handlePageChange}
                 />
               </CardBody>
+              <CardFooter>
+                <Row>
+                  <Col md={{ span: 6, offset: 3 }}>
+                      <small className="text-muted">
+                        비교하고 싶은 두 국가를 선택하여, 출입국 현황과 확진자 비율을 차트로 확인해보세요.&nbsp;&nbsp;
+                      </small>
+                      <Button color="primary" onClick={handleSubmit}>
+                        비교하기
+                      </Button>
+                  </Col>
+                </Row>
+              </CardFooter>
+
             </Card>
           </Col>
         </Row>

@@ -50,7 +50,7 @@ function CovidRateCnt(props) {
       datasets: [
         {
           data: [p, 100 - p],
-          backgroundColor: [getColor('primary'), getColor('secondary')],
+          backgroundColor: [getColor('primary'), getColor('lightgray')],
           label: 'Dataset 1',
         },
       ],
