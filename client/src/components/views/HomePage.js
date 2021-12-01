@@ -7,15 +7,34 @@ import { nations } from '../../assets/geo-data/nations.json';
 export const HomePage = props => {
   const [touristKr, settouristKr] = useState([]);
   let tmp = {
-    YM: '202106',
+    YM: '202102',
     natCd: '100',
     edCd: 'D',
   };
+
   useEffect(() => {
-    Axios.post(`/api/info/TourismStats`, tmp).then(res => {
-      console.log(res);
-    });
+    load();
   }, []);
+  const load = async () => {
+    // let ym = '20210';
+    // let result = [];
+    // for (let i = 1; i < 11; i++) {
+    //   if (i == 10) {
+    //     tmp = { ...tmp, YM: '202110' };
+    //   } else {
+    //     tmp = { ...tmp, YM: ym + i };
+    //   }
+    //   Axios.post(`/api/info/TourismStats`, tmp).then(res => {
+    //     result = [...result, res.data.data.body.response.body.items.item.num];
+    //     console.log(res.data.data.body.response.body.items.item.num);
+    //   });
+    // }
+    let result = [];
+    Axios.post(`/api/info/TourismStats`, tmp).then(res => {
+      result = [...result, res.data.data.body.response.body.items.item.num];
+      console.log(res.status);
+    });
+  };
   // let a = '한국';
   // let t = nations;
   // console.log(t);

@@ -27,6 +27,7 @@ const CovidRateCnt = React.lazy(() =>
   import('./components/chart/CovidRateCnt'),
 );
 const HomePage = React.lazy(() => import('./components/views/HomePage'));
+const VisitorsBar = React.lazy(() => import('./components/chart/VisitorsBar'));
 
 class App extends React.Component {
   render() {
@@ -73,6 +74,7 @@ class App extends React.Component {
                 <Route exact path="/test1" component={GeoWithDefcnt} />
                 <Route exact path="/test2" component={TravleAlarmData} />
                 <Route exact path="/test3" component={HomePage} />
+                <Route exact path="/test4" component={VisitorsBar} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />
