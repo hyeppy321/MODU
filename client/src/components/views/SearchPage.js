@@ -4,9 +4,11 @@ import Axios from 'axios';
 import moment from 'moment';
 import Page from 'components/Page';
 import { features } from '../../assets/geo-data/countries.json';
+import { visitors } from '../../assets/geo-data/visitorsList.json';
 import { IconWidget } from '../../components/Widget';
 import WeatherWidget from '../Widget/WeatherWidget';
 import TravleAlarmData from '../precleaning/TravelAlarmData';
+import VisitorsBar from '../chart/VisitorsBar';
 import { Weather_URI, Weather_KEY } from '../Config';
 import { MdCoronavirus, MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 import {
@@ -73,6 +75,7 @@ export const SearchPage = props => {
     '50d': WiFog,
   };
   const [Alarm, setAlarm] = useState();
+  const [visitorsList, setvisitorsList] = useState([]);
 
   let nowddd = moment().format('ddd');
   let nowHH = moment().format('HH');
@@ -133,6 +136,9 @@ export const SearchPage = props => {
     } else if (nowHH < 12) {
       t = moment(sysToday).subtract(1, 'days').format('YYYYMMDD');
       y = moment(sysYesterday).subtract(1, 'days').format('YYYYMMDD');
+    } else {
+      t = sysToday;
+      y = sysYesterday;
     }
     return [t, y];
   };
@@ -148,8 +154,19 @@ export const SearchPage = props => {
     setCoronaInfo(todayDefcnt);
   };
 
+  const filterCheck = nation => {
+    // let arr = [];
+    visitors
+      .filter(item => item.name.indexOf(nation) != -1)
+      .map(data => {
+        if (nation === data.name) {
+          // arr = data.num;
+          setvisitorsList(data.num);
+        }
+      });
+  };
+
   const filterCnt = name => {
-    console.log(111);
     CoronaInfo.filter(item => item.nationNm.indexOf(name) != -1).map(data => {
       if (name === data.nationNm) {
         let tmp = {
@@ -200,6 +217,7 @@ export const SearchPage = props => {
     setVisible(true);
     getArrivalsServiceInfo();
     filterCnt(CountryName);
+    filterCheck(CountryName);
     getWeatherInfo();
     setAlarm(CountryName);
   };
@@ -348,6 +366,11 @@ export const SearchPage = props => {
             />
           </Col>
           <TravleAlarmData nation={Alarm} />
+        </Row>
+      )}
+      {IsInfo && Visible && visitorsList !== [] && (
+        <Row>
+          <VisitorsBar nation={CountryName} visitorsList={visitorsList} />
         </Row>
       )}
       {IsInfo && Visible && (
