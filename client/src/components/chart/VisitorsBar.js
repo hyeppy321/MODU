@@ -31,7 +31,8 @@ function VisitorsBar(props) {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [props.nation]);
+
   const load = async () => {
     let tmp = {
       YM: '',

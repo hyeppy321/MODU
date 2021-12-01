@@ -155,15 +155,16 @@ export const SearchPage = props => {
   };
 
   const filterCheck = nation => {
-    // let arr = [];
+    let arr = [];
     visitors
       .filter(item => item.name.indexOf(nation) != -1)
       .map(data => {
         if (nation === data.name) {
-          // arr = data.num;
-          setvisitorsList(data.num);
+          arr = data.num;
+          // setvisitorsList(data.num);
         }
       });
+    setvisitorsList(arr);
   };
 
   const filterCnt = name => {
@@ -213,13 +214,13 @@ export const SearchPage = props => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-
-    setVisible(true);
-    getArrivalsServiceInfo();
+    setVisible(false);
+    await getArrivalsServiceInfo();
     filterCnt(CountryName);
     filterCheck(CountryName);
     getWeatherInfo();
     setAlarm(CountryName);
+    setVisible(true);
   };
 
   useEffect(() => {
@@ -368,9 +369,9 @@ export const SearchPage = props => {
           <TravleAlarmData nation={Alarm} />
         </Row>
       )}
-      {IsInfo && Visible && visitorsList !== [] && (
+      {IsInfo && Visible && visitorsList.length !== 0 && (
         <Row>
-          <VisitorsBar nation={CountryName} visitorsList={visitorsList} />
+          <VisitorsBar nation={Alarm} visitorsList={visitorsList} />
         </Row>
       )}
       {IsInfo && Visible && (
