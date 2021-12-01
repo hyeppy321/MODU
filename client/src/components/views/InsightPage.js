@@ -24,15 +24,15 @@ function InsightPage(props) {
         </Col>
       </Row>
       <Row>
+        <VisitorsMain />
+      </Row>
+      <Row>
         <Col xl={6} lg={12} md={12}>
           <Chart1 />
         </Col>
         <Col xl={6} lg={12} md={12}>
           <Chart2 />
         </Col>
-      </Row>
-      <Row>
-        <VisitorsMain />
       </Row>
     </Page>
   );
