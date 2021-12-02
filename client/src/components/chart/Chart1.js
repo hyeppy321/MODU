@@ -29,7 +29,7 @@ function Chart1() {
       labels,
       datasets: [
         {
-          label: '국내 치료 중인 환자 수',
+          label: '국내 누적 의심신고 검사자',
           backgroundColor: getColor('primary'),
           borderColor: getColor('primary'),
           borderWidth: 2,
@@ -48,7 +48,7 @@ function Chart1() {
           year: moment(item.createDt).format('YY'),
           month: moment(item.createDt).format('MM'),
           date: moment(item.createDt).format('DD'),
-          careCnt: item.careCnt,
+          careCnt: item.accExamCnt,
         },
       ];
     });
@@ -77,7 +77,7 @@ function Chart1() {
 
   return (
     <Card>
-      <CardHeader>국내 치료 중인 환자 수</CardHeader>
+      <CardHeader>국내 누적 의심신고 검사자</CardHeader>
       <CardBody>
         {Load === true ? <Loading /> : <Line data={ConfirmedData} />}
       </CardBody>

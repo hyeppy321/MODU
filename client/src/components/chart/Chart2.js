@@ -15,7 +15,6 @@ function Chart2() {
   useEffect(() => {
     window.scrollTo(0, 0);
     let dtData = makeWeek();
-    console.log(dtData);
     Axios.post(`/api/info/Covid19Chart2`, dtData).then(res => {
       makeData(res.data.data.body.response.body.items.item);
       arrReverse = [...arr].reverse();
@@ -56,7 +55,7 @@ function Chart2() {
   };
 
   const makeWeek = () => {
-    let hour = moment('2021-11-26 09:00:00','YYYY-MM-DD HH:mm:ss').format('HH');
+    let hour = moment().format('HH');
     let createdt;
     let enddt;
 
