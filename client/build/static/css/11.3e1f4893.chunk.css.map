@@ -1,0 +1,1 @@
+{"version":3,"sources":["/Users/baechanbi/Documents/GitHub/TravleingWithCorona/client/src/components/map/CovidMap.css","11.3e1f4893.chunk.css"],"names":[],"mappings":"AAAA,mBACI,wBCCJ","file":"11.3e1f4893.chunk.css","sourcesContent":[".leaflet-container{\n    background-color:rgb(163,206,255);\n}",".leaflet-container{\n    background-color:rgb(163,206,255);\n}\n"]}
