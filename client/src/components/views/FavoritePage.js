@@ -144,6 +144,14 @@ function FavoritePage(props) {
         cloud: res.data.clouds.all + '%',
       };
       setWeatherInfo((prevState) => [...prevState, tmp]);
+      if(WeatherInfo.length==2){
+        let tmp2 = submitItem[1].split(' ');
+        if(tmp2[0]!=enName){
+          let n = WeatherInfo[0];
+          WeatherInfo[0]=WeatherInfo[1];
+          WeatherInfo[1]=n;
+        }
+      }
     });
   };
 
@@ -168,6 +176,14 @@ function FavoritePage(props) {
             } else {
               res.data.data.body.data.map(item => {
                 setContent((prevState)=>[...prevState, item.txt_origin_cn]);
+                if(Content.length==2){
+                  let tmp2 = submitItem[0].split(' ');
+                  if(tmp2[0]!=Content[0].CountryName){
+                    let n = Content[0];
+                    Content[0]=Content[1];
+                    Content[1]=n;
+                  }
+                }
               });
             }
           }
