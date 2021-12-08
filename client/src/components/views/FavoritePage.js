@@ -45,6 +45,7 @@ function FavoritePage(props) {
   const [submitItemW, setsubmitItemW] = useState([]);
   const [WeatherInfo, setWeatherInfo] = useState([]);
   const [Content, setContent] = useState([]);
+  const [IsContent, setIsContent] = useState(false);
 
   const [cnt, setcnt] = useState(0);
   const WeatherIcon = {
@@ -101,7 +102,7 @@ function FavoritePage(props) {
     for (let i of checkedItems) {
       let words = i.split(',');
       tmp = [...tmp, words[0]];
-      tmp2 = [...tmp2, words[1]];
+      tmp2 = [...tmp2, i];
     }
     await setContent([]);
     await setWeatherInfo([]);
@@ -128,7 +129,9 @@ function FavoritePage(props) {
   };
 
   const getWeatherInfo = (item) => {
-    let enName = item;
+    let words = item.split(',');
+    let enName = words[1];
+    let tmp2 = item.split(' ');
     if (item=== 'Hong Kong S.A.R.') {
       enName = 'HongKong';
     }
@@ -142,16 +145,9 @@ function FavoritePage(props) {
         icon: WeatherIcon[res.data.weather[0].icon],
         wind: res.data.wind.speed,
         cloud: res.data.clouds.all + '%',
+        CountryName : tmp2[0],
       };
       setWeatherInfo((prevState) => [...prevState, tmp]);
-      if(WeatherInfo.length==2){
-        let tmp2 = submitItem[1].split(' ');
-        if(tmp2[0]!=enName){
-          let n = WeatherInfo[0];
-          WeatherInfo[0]=WeatherInfo[1];
-          WeatherInfo[1]=n;
-        }
-      }
     });
   };
 
@@ -160,6 +156,18 @@ function FavoritePage(props) {
       getWeatherInfo(item);
     })
   },[submitItemW]);
+
+  useEffect(()=>{
+    if(WeatherInfo.length==2){
+      let tmp2 = submitItem[0].split(' ');
+      //console.log(WeatherInfo[1].CountryName, tmp2[0], 'Weather');
+      if(tmp2[0]==WeatherInfo[1].CountryName){
+        let n = WeatherInfo[0];
+        WeatherInfo[0]=WeatherInfo[1];
+        WeatherInfo[1]=n;
+      }
+    }
+  },[WeatherInfo]);
 
   useEffect(() => {
     let tmp = [];
@@ -172,18 +180,10 @@ function FavoritePage(props) {
         if (res.data.success) {
           if (res.data.data.body.resultMsg == '정상') {
             if (res.data.data.body.data.length == 0) {
-              setContent((prevState)=>[...prevState, '정보가 없습니다.']);
+              setContent((prevState)=>[...prevState, {con:'정보가 없습니다.',kName:item.CountryName}]);
             } else {
-              res.data.data.body.data.map(item => {
-                setContent((prevState)=>[...prevState, item.txt_origin_cn]);
-                if(Content.length==2){
-                  let tmp2 = submitItem[0].split(' ');
-                  if(tmp2[0]!=Content[0].CountryName){
-                    let n = Content[0];
-                    Content[0]=Content[1];
-                    Content[1]=n;
-                  }
-                }
+              res.data.data.body.data.map(item2 => {
+                setContent((prevState)=>[...prevState, {con:item2.txt_origin_cn,kName:item.CountryName}]);
               });
             }
           }
@@ -191,6 +191,20 @@ function FavoritePage(props) {
       });
     })
   },[submitItem]);
+
+  useEffect(()=>{
+    if(Content.length==2&& submitItem.length==2){
+      let tmp2 = submitItem[0].split(' ');
+      //console.log(Content[0].kName, tmp2[0], 'Content');
+      setIsContent(true);
+      if(tmp2[0]!=Content[0].kName){
+        let n = Content[0];
+        Content[0]=Content[1];
+        Content[1]=n;
+        //console.log(Content[0].kName, tmp2[0], 'ContentSwitch');
+      }
+    }
+  },[Content]);
 
   const { data, pageSize, currentPage } = Favorites;
   const pagedFavorites = paginate(data, currentPage, pageSize);
@@ -319,14 +333,15 @@ function FavoritePage(props) {
             })}
           </Row>
         )}
-        {Comp && (
+        {Comp && IsContent &&(
           <Row>
             {Content.map(item=>{
+              //console.log(item.kName);
               return(
                 <Col>
                 <Card className="mb-3" style={{ whiteSpace: 'pre-wrap' }}>
                   <CardHeader tag="h5">각국의 해외 입국자에 대한 조치 현황 </CardHeader>
-                  <CardBody>{item}</CardBody>
+                  <CardBody>{item.con}</CardBody>
                 </Card>
               </Col>
               );
